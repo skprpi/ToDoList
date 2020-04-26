@@ -10,9 +10,9 @@ class NewItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val subtitle: TextView = itemView.findViewById(R.id.subtitle)
     val image: ImageView = itemView.findViewById(R.id.image2)
 
-    fun bin(titleText: String, subtitleText: String, color: Int){
-        title.text = titleText
-        subtitle.text = subtitleText
-        image.setBackgroundColor(color)
+    fun bin(item: NewItem){
+        title.text = item.titleText
+        subtitle.text = item.subtitleText
+        image.setBackgroundColor(item.color)
     }
 }
