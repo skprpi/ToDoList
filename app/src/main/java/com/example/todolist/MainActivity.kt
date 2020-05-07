@@ -39,9 +39,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initRecycler(){
+
+        val listenerInterface: ListenerInterface = object : ListenerInterface{
+            override fun onItemClicked(item: NewItem) {
+                val intent = Intent(this@MainActivity, ActivityList::class.java)
+                startActivity(intent)
+            }
+        }
         val recycler = findViewById<RecyclerView>(R.id.recycler)
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recycler.layoutManager = layoutManager
-        recycler.adapter = NewAdapter(LayoutInflater.from(this), items)
+        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.adapter = NewAdapter(items, listenerInterface)
     }
 }
