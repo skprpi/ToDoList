@@ -7,9 +7,12 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         initRecycler()
+        clickListenerAddandRemove()
     }
 
     fun initRecycler(){
@@ -54,4 +58,23 @@ class MainActivity : AppCompatActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = NewAdapter(items, listenerInterface)
     }
+
+    fun clickListenerAddandRemove(){
+        findViewById<View>(R.id.addButton).setOnClickListener(){
+            if (items.size > 0) {
+                items.add(items.indexOf(items.last()), NewItem("header1", "subHeader", Color.CYAN))
+            } else{
+                items.add(0, NewItem("header1", "subHeader", Color.CYAN))
+            }
+            recycler.adapter?.notifyDataSetChanged()
+        }
+
+        findViewById<View>(R.id.removeButton).setOnClickListener(){
+            if (items.size > 0) {
+                items.removeAt(items.lastIndexOf(items.last()))
+                recycler.adapter?.notifyDataSetChanged()
+            }
+        }
+    }
+
 }

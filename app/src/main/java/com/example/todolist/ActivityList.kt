@@ -14,18 +14,17 @@ class ActivityList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-        val inputField = findViewById<TextInputEditText>(R.id.input_field2)
-        val sPref: SharedPreferences = getPreferences(Context.MODE_PRIVATE)
-        val sEdit: SharedPreferences.Editor = sPref.edit()
-//
-        val str:String? = sPref.getString("text", "")
-
-        inputField.setText(str)
+        getValue()
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
 
+        saveValue()
+        //Toast.makeText(this, inputField.text.toString(), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun saveValue(){
         val inputField = findViewById<TextInputEditText>(R.id.input_field2)
         val sPref: SharedPreferences = getPreferences(Context.MODE_PRIVATE)
         val sEdit: SharedPreferences.Editor = sPref.edit()
@@ -33,6 +32,15 @@ class ActivityList : AppCompatActivity() {
 
         sEdit.putString("text", inputField.text.toString())
         sEdit.commit()
-        Toast.makeText(this, inputField.text.toString(), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getValue(){
+        val inputField = findViewById<TextInputEditText>(R.id.input_field2)
+        val sPref: SharedPreferences = getPreferences(Context.MODE_PRIVATE)
+        val sEdit: SharedPreferences.Editor = sPref.edit()
+//
+        val str:String? = sPref.getString("text", "")
+
+        inputField.setText(str)
     }
 }
