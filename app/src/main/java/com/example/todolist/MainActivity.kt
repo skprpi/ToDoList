@@ -1,80 +1,73 @@
 package com.example.todolist
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.Button
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textfield.TextInputEditText
-import kotlinx.android.synthetic.main.activity_main.*
-
-class MainActivity : AppCompatActivity() {
+import androidx.fragment.app.Fragment
 
 
-    val items = mutableListOf(
-        NewItem("Заголовок1", "подзаголовок", Color.RED) ,
-        NewItem("Заголовок2", "подзаголовок", Color.BLUE) ,
-        NewItem("Заголовок3", "подзаголовок", Color.BLACK) ,
-        NewItem("Заголовок4", "подзаголовок", Color.RED) ,
-        NewItem("Заголовок5", "подзаголовок", Color.BLUE) ,
-        NewItem("Заголовок6", "подзаголовок", Color.BLACK) ,
-        NewItem("Заголовок7", "подзаголовок", Color.RED) ,
-        NewItem("Заголовок8", "подзаголовок", Color.BLUE) ,
-        NewItem("Заголовок9", "подзаголовок", Color.BLACK) ,
-        NewItem("Заголовок10", "подзаголовок", Color.RED) ,
-        NewItem("Заголовок11", "подзаголовок", Color.BLUE) ,
-        NewItem("Заголовок12", "подзаголовок", Color.BLACK) ,
-        NewItem("Заголовок13", "подзаголовок", Color.RED) ,
-        NewItem("Заголовок14", "подзаголовок", Color.BLUE) ,
-        NewItem("Заголовок15", "подзаголовок", Color.BLACK) ,
-        NewItem("Заголовок16", "подзаголовок", Color.RED) ,
-        NewItem("Заголовок17", "подзаголовок", Color.BLUE) ,
-        NewItem("Заголовок18", "подзаголовок", Color.BLACK)
-    )
+class MainActivity : AppCompatActivity(), Navigatable {
+
+    lateinit var task:Task
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initRecycler()
-        clickListenerAddandRemove()
+       navigateTo(Navigatable.Screens.ITEM_LIST)
     }
 
-    fun initRecycler(){
+    override fun navigateTo(screen: Navigatable.Screens) {
+        val ft = supportFragmentManager.beginTransaction()
+        val fragment:Fragment
 
-        val listenerInterface: ListenerInterface = object : ListenerInterface{
-            override fun onItemClicked(item: NewItem) {
-                val intent = Intent(this@MainActivity, ActivityList::class.java)
-                startActivity(intent)
-            }
+        when(screen){
+            Navigatable.Screens.ITEM_LIST -> fragment = ListFragment()
+            Navigatable.Screens.DETAIL_SCREEN -> fragment = EditTaskFragment()
         }
-        val recycler = findViewById<RecyclerView>(R.id.recycler)
-        recycler.layoutManager = LinearLayoutManager(this)
-        recycler.adapter = NewAdapter(items, listenerInterface)
+
+        if (supportFragmentManager.backStackEntryCount == 0){
+            ft.add(R.id.root_container, fragment, screen.name)
+        } else{
+            ft.replace(R.id.root_container, fragment, screen.name)
+        }
+
+        ft.addToBackStack(screen.name)
+            .commit()
     }
 
-    fun clickListenerAddandRemove(){
-        findViewById<View>(R.id.addButton).setOnClickListener(){
-            if (items.size > 0) {
-                items.add(items.indexOf(items.last()), NewItem("header1", "subHeader", Color.CYAN))
-            } else{
-                items.add(0, NewItem("header1", "subHeader", Color.CYAN))
-            }
-            recycler.adapter?.notifyDataSetChanged()
-        }
+    override fun goBack() {
+        if (supportFragmentManager.backStackEntryCount > 0)
+            supportFragmentManager.popBackStack()
 
-        findViewById<View>(R.id.removeButton).setOnClickListener(){
-            if (items.size > 0) {
-                items.removeAt(items.lastIndexOf(items.last()))
-                recycler.adapter?.notifyDataSetChanged()
-            }
-        }
     }
+
+
+    /* fun clickListenerAddandRemove(){
+         findViewById<View>(R.id.addButton).setOnClickListener(){
+
+             newItem = NewItem("", "", Color.CYAN)
+
+             if (items.size > 0)
+                 items.add(items.indexOf(items.last()), newItem)
+             else
+                 items.add(0, newItem)
+
+             recycler.adapter?.notifyDataSetChanged()
+
+
+             val activityList: ActivityList = ActivityList()
+
+             val intent = Intent(this, activityList::class.java)
+             startActivity(intent)
+
+         }
+
+         findViewById<View>(R.id.removeButton).setOnClickListener(){
+             if (items.size > 0) {
+                 items.removeAt(items.lastIndexOf(items.last()))
+                 recycler.adapter?.notifyDataSetChanged()
+             }
+         }
+     }*/
 
 }
