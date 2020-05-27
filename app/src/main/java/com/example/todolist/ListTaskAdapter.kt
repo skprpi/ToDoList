@@ -7,13 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class NewAdapter(val items: MutableList<Task>, var listener: ListenerInterface?):RecyclerView.Adapter<NewAdapter.NewItemViewHolder>() {
+class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterface?):RecyclerView.Adapter<ListTaskAdapter.NewItemViewHolder>() {
 
     companion object{
         const val TAG = "NewAdapter"
     }
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewItemViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_one, parent, false)
@@ -54,9 +52,10 @@ class NewAdapter(val items: MutableList<Task>, var listener: ListenerInterface?)
         fun bind(item: Task){
             title.text = item.titleText
             subtitle.text = item.subtitleText
-            image.setBackgroundColor(item.color)
         }
     }
+
+
     
 }
 

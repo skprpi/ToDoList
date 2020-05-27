@@ -7,8 +7,7 @@ interface Navigatable {
         DETAIL_SCREEN
     }
 
-    fun navigateTo(screen :Screens)
-
     fun goBack()
 
+    fun navigateTo(screen: Screens, data: Any? = null)
 }

@@ -1,6 +1,5 @@
 package com.example.todolist
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,15 +23,18 @@ class ListFragment: Fragment() {
         val listener = object: ListenerInterface{
             override fun onItemClicked(item: Task) {
                 if (activity is Navigatable){
-                    (activity as Navigatable).navigateTo(Navigatable.Screens.DETAIL_SCREEN)
+                    (activity as Navigatable).navigateTo(Navigatable.Screens.DETAIL_SCREEN, item)
                 }
 
             }
         }
 
-        val adapter = NewAdapter(ItemRepository.instance.getItems(), listener)
+        val adapter = ListTaskAdapter(ItemRepository.instance.getItems(), listener)
 
         recycler.adapter = adapter
+
+
+
         return view
     }
 

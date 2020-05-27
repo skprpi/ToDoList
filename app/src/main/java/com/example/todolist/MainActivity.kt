@@ -3,6 +3,7 @@ package com.example.todolist
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.todolist.ItemRepository.Companion.instance
 
 
 class MainActivity : AppCompatActivity(), Navigatable {
@@ -16,13 +17,19 @@ class MainActivity : AppCompatActivity(), Navigatable {
        navigateTo(Navigatable.Screens.ITEM_LIST)
     }
 
-    override fun navigateTo(screen: Navigatable.Screens) {
+    override fun navigateTo(screen: Navigatable.Screens, data: Any?) {
         val ft = supportFragmentManager.beginTransaction()
         val fragment:Fragment
 
         when(screen){
             Navigatable.Screens.ITEM_LIST -> fragment = ListFragment()
-            Navigatable.Screens.DETAIL_SCREEN -> fragment = EditTaskFragment()
+            Navigatable.Screens.DETAIL_SCREEN -> {
+                fragment = if (data is Task){
+                    EditTaskFragment.newInstance(data)
+                } else {
+                    EditTaskFragment()
+                }
+            }
         }
 
         if (supportFragmentManager.backStackEntryCount == 0){

@@ -1,4 +1,15 @@
 package com.example.todolist
 
-data class Task(var titleText:String, var subtitleText: String, var color: Int) {
-}
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class Task(var id: Int,
+                var titleText:String,
+                var subtitleText: String,
+                var selectedDays: List<Int>,
+                var timeStart: Long,
+                var timeEnd : Long,
+                var notification: Int,
+                var notificationType : Int
+) : Parcelable
