@@ -12,9 +12,13 @@ class ListFragment: Fragment() {
 
     private lateinit var recycler: RecyclerView
 
+    private lateinit var adapter: ListTaskAdapter
+
+    lateinit var listOfDate : List<DateItem>
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val view =  inflater.inflate(R.layout.fragment_layout_setting, container, false)//Переводит xml в код (все элементы)
+        val view =  inflater.inflate(R.layout.fragment_task_list, container, false)//Переводит xml в код (все элементы)
 
         recycler = view.findViewById(R.id.recyclerView)
         recycler.layoutManager = LinearLayoutManager(context)//отвечает за расположение элементов на экране внутри recycler
@@ -29,7 +33,7 @@ class ListFragment: Fragment() {
             }
         }
 
-        val adapter = ListTaskAdapter(ItemRepository.instance.getItems(), listener)
+        adapter = ListTaskAdapter(ItemRepository.instance.getItems(), listener)
 
         recycler.adapter = adapter
 
@@ -38,9 +42,15 @@ class ListFragment: Fragment() {
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
+        //adapter.setItems(ItemRepository.instance.getItems())
     }
+
+    fun initLIstOfDay(){
+        // получаем куррент в мили сек - определяем сейчас дату, нужен день месяца и день недели, инициальзирую +- месяц
+    }
+
 
 
 

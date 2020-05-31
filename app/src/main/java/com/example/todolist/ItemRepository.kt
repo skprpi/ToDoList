@@ -23,7 +23,8 @@ class ItemRepository {
     fun updateTask(task: Task){
         for (item in listItems) {
             if (item.id == task.id) {
-                item.copy(titleText = task.titleText, subtitleText = task.subtitleText)
+                item.titleText = task.titleText
+                item.subtitleText = task.subtitleText
                 return
             }
         }
