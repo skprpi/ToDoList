@@ -14,7 +14,7 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewItemViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_one, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
         val holder = NewItemViewHolder(view)
 
         view.setOnClickListener{

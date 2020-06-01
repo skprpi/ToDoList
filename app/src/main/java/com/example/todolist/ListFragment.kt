@@ -1,24 +1,50 @@
 package com.example.todolist
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.lang.Math.abs
+import java.text.DateFormat
+import java.text.DateFormat.getDateInstance
+import java.util.*
 
 class ListFragment: Fragment() {
 
     private lateinit var recycler: RecyclerView
 
     private lateinit var adapter: ListTaskAdapter
+    private lateinit var adapterDate: DateAdapter
 
-    lateinit var listOfDate : List<DateItem>
+    private lateinit var listOfDate : MutableList<DateItem>
+
+    private val dayOfWeekList =listOf(
+        "ПН",
+        "ВТ",
+        "СР",
+        "ЧТ",
+        "ПТ",
+        "СБ",
+        "ВС"
+    )
+
+    private var lastDay = 180
+
+    private var firstDay = -180
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
+
+
+
         val view =  inflater.inflate(R.layout.fragment_task_list, container, false)//Переводит xml в код (все элементы)
+
+       // val button = container!!.findViewById<Button>(R.id.option_new_xxx)
+       // button.setOnCreateContextMenuListener(this)
 
         recycler = view.findViewById(R.id.recyclerView)
         recycler.layoutManager = LinearLayoutManager(context)//отвечает за расположение элементов на экране внутри recycler
@@ -39,16 +65,77 @@ class ListFragment: Fragment() {
 
 
 
+        val recyclerDate = view.findViewById<RecyclerView>(R.id.recyclerDate)
+        recyclerDate.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)//отвечает за расположение элементов на экране внутри recycler
+
+        adapterDate = DateAdapter()
+        initListOfDay()
+        adapterDate.setItems(listOfDate, -30, 30)
+
+        recyclerDate.adapter = adapterDate
+        recyclerDate.scrollToPosition((listOfDate.size / 2) - 1)
+
+
+
         return view
     }
 
-    override fun onStart() {
-        super.onStart()
-        //adapter.setItems(ItemRepository.instance.getItems())
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+
     }
 
-    fun initLIstOfDay(){
-        // получаем куррент в мили сек - определяем сейчас дату, нужен день месяца и день недели, инициальзирую +- месяц
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menu.add(0, 0, 0, "Выполнено")
+        menu.add(0, 1, 0, "Удалить")
+        menu.add(0, 2, 0, "Редактировать")
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        Toast.makeText(requireContext(), item.title, Toast.LENGTH_SHORT)
+        when(item.itemId){
+
+            0 ->{
+
+            }
+            1 ->{
+
+            }
+            2 ->{
+
+            }
+        }
+        return true
+    }
+
+    private fun initListOfDay(){
+        val gc: GregorianCalendar =  GregorianCalendar()
+        gc.add(Calendar.DATE, firstDay)
+
+        val dayOfMonth = gc.get(GregorianCalendar.DAY_OF_MONTH)
+        var dayOfWeek = gc.get(GregorianCalendar.DAY_OF_WEEK)
+
+        dayOfWeek = (dayOfWeek + 5) % 7
+        val strDayOfWeek = dayOfWeekList[dayOfWeek]
+        listOfDate = mutableListOf(DateItem(strDayOfWeek, dayOfMonth.toString()))
+
+
+        for (i in firstDay + 1..lastDay){
+            val gc: GregorianCalendar =  GregorianCalendar()
+            gc.add(Calendar.DATE, i)
+
+            val dayOfMonth = gc.get(GregorianCalendar.DAY_OF_MONTH)
+            var dayOfWeek = gc.get(GregorianCalendar.DAY_OF_WEEK)
+
+            dayOfWeek = (dayOfWeek + 5) % 7
+            val strDayOfWeek = dayOfWeekList[dayOfWeek]
+
+
+            listOfDate.add(DateItem(strDayOfWeek, dayOfMonth.toString()))
+        }
     }
 
 
