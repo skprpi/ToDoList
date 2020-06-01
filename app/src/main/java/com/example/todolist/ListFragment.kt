@@ -43,8 +43,6 @@ class ListFragment: Fragment() {
 
         val view =  inflater.inflate(R.layout.fragment_task_list, container, false)//Переводит xml в код (все элементы)
 
-       // val button = container!!.findViewById<Button>(R.id.option_new_xxx)
-       // button.setOnCreateContextMenuListener(this)
 
         recycler = view.findViewById(R.id.recyclerView)
         recycler.layoutManager = LinearLayoutManager(context)//отвечает за расположение элементов на экране внутри recycler
@@ -60,7 +58,7 @@ class ListFragment: Fragment() {
         }
 
         adapter = ListTaskAdapter(ItemRepository.instance.getItems(), listener)
-
+        adapter.contextMenuListener = this
         recycler.adapter = adapter
 
 
@@ -80,12 +78,6 @@ class ListFragment: Fragment() {
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-
-    }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
@@ -95,7 +87,7 @@ class ListFragment: Fragment() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        Toast.makeText(requireContext(), item.title, Toast.LENGTH_SHORT)
+        Toast.makeText(requireContext(), item.title, Toast.LENGTH_SHORT).show()
         when(item.itemId){
 
             0 ->{
