@@ -12,7 +12,8 @@ import kotlin.coroutines.coroutineContext
 
 class SwipeToDelete(var adapter: ListTaskAdapter,var  recycler: RecyclerView, val delIcon: Drawable) : ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
 
-    private var swipeBackgrownd: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
+    private var swipeBackgrowndR: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
+    private var swipeBackgrowndL: ColorDrawable = ColorDrawable(Color.parseColor("#FF8BC34A"))
 
 
     override fun onMove(
@@ -51,19 +52,20 @@ class SwipeToDelete(var adapter: ListTaskAdapter,var  recycler: RecyclerView, va
 
         val itemView2 = viewHolder.itemView
 
-        val iconMargin = itemView2.height - delIcon.intrinsicHeight / 2
+        val iconMargin = (itemView2.height - delIcon.intrinsicHeight) / 2
 
         val itemView = viewHolder.itemView
         if (dX > 0){
-            swipeBackgrownd.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+            swipeBackgrowndL.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
             delIcon.setBounds(itemView.left + iconMargin, itemView.top + iconMargin,
                 itemView.left + iconMargin + delIcon.intrinsicWidth, itemView.bottom - iconMargin)
         }else{
-            swipeBackgrownd.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+            swipeBackgrowndR.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
             delIcon.setBounds(itemView.right - iconMargin - delIcon.intrinsicWidth, itemView.top + iconMargin,
                 itemView.right - iconMargin , itemView.bottom - iconMargin)
         }
-        swipeBackgrownd.draw(c)
+        swipeBackgrowndL.draw(c)
+        swipeBackgrowndR.draw(c)
 
         c.save()
 
