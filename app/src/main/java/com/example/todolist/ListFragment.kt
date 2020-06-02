@@ -1,17 +1,15 @@
 package com.example.todolist
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import java.lang.Math.abs
-import java.text.DateFormat
-import java.text.DateFormat.getDateInstance
 import java.util.*
+
 
 class ListFragment: Fragment() {
 
@@ -59,6 +57,8 @@ class ListFragment: Fragment() {
 
         adapter = ListTaskAdapter(ItemRepository.instance.getItems(), listener)
         adapter.contextMenuListener = this
+
+
         recycler.adapter = adapter
 
 
@@ -68,7 +68,7 @@ class ListFragment: Fragment() {
 
         adapterDate = DateAdapter()
         initListOfDay()
-        adapterDate.setItems(listOfDate, -30, 30)
+        adapterDate.setItems(listOfDate)
 
         recyclerDate.adapter = adapterDate
         recyclerDate.scrollToPosition((listOfDate.size / 2) - 1)
@@ -79,29 +79,7 @@ class ListFragment: Fragment() {
     }
 
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        menu.add(0, 0, 0, "Выполнено")
-        menu.add(0, 1, 0, "Удалить")
-        menu.add(0, 2, 0, "Редактировать")
-    }
 
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        Toast.makeText(requireContext(), item.title, Toast.LENGTH_SHORT).show()
-        when(item.itemId){
-
-            0 ->{
-
-            }
-            1 ->{
-
-            }
-            2 ->{
-
-            }
-        }
-        return true
-    }
 
     private fun initListOfDay(){
         val gc: GregorianCalendar =  GregorianCalendar()

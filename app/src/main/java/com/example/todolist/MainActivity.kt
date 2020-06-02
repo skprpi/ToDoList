@@ -2,11 +2,14 @@ package com.example.todolist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.example.todolist.ItemRepository.Companion.instance
 
 
-class MainActivity : AppCompatActivity(), Navigatable {
+class MainActivity : AppCompatActivity(), Navigatable, MenuItem.OnMenuItemClickListener {
 
     lateinit var task:Task
 
@@ -42,11 +45,40 @@ class MainActivity : AppCompatActivity(), Navigatable {
             .commit()
     }
 
+    override fun onBackPressed() {
+        goBack()
+    }
+
     override fun goBack() {
-        if (supportFragmentManager.backStackEntryCount > 0)
+        if (supportFragmentManager.backStackEntryCount > 1)
             supportFragmentManager.popBackStack()
 
     }
+
+
+    public fun showPopup(view: View){
+        val popup: PopupMenu = PopupMenu(this, view)
+        // popup.setOnMenuItemClickListener()
+        popup.inflate(R.menu.popup_menu)
+        popup.show()
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            R.id.item1 ->{
+
+            }
+            R.id.item2 ->{
+
+            }
+            R.id.item3 ->{
+
+            }
+        }
+        return true
+    }
+
+
 
 
     /* fun clickListenerAddandRemove(){
@@ -78,3 +110,6 @@ class MainActivity : AppCompatActivity(), Navigatable {
      }*/
 
 }
+
+
+

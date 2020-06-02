@@ -17,16 +17,9 @@ class DateAdapter() : RecyclerView.Adapter<DateAdapter.Holder>() {
 
     lateinit var myList: MutableList<DateItem>
 
-    var listIndexFront: Int = 0
-    var listIndexBack: Int = 0
 
-
-
-
-    fun setItems(list : MutableList<DateItem>, indexFront: Int, indexBack: Int){
+    fun setItems(list : MutableList<DateItem>){
         myList = list
-        listIndexFront = indexFront
-        listIndexBack = indexBack
         notifyDataSetChanged()
     }
 
@@ -39,8 +32,6 @@ class DateAdapter() : RecyclerView.Adapter<DateAdapter.Holder>() {
             val itemPosition = holder.adapterPosition
 
         }
-
-
 
         val itemPosition = holder.adapterPosition
 
