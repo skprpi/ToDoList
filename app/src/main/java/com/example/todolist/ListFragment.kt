@@ -1,10 +1,12 @@
 package com.example.todolist
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +22,8 @@ class ListFragment: Fragment() {
     private lateinit var adapterDate: DateAdapter
 
     private lateinit var listOfDate : MutableList<DateItem>
+
+    private lateinit var delIcon : Drawable
 
     private val dayOfWeekList =listOf(
         "ПН",
@@ -75,7 +79,12 @@ class ListFragment: Fragment() {
         recyclerDate.adapter = adapterDate
         recyclerDate.scrollToPosition((listOfDate.size / 2) - 1)
 
-        var itemTouchHelper = ItemTouchHelper(SwipeToDelete(adapter, recycler))
+
+        delIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete)!!//mistake-----------------------------------
+
+
+
+        var itemTouchHelper = ItemTouchHelper(SwipeToDelete(adapter, recycler,  delIcon))
         itemTouchHelper.attachToRecyclerView(recycler)
 
         return view
