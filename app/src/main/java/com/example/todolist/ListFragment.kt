@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
@@ -41,6 +42,7 @@ class ListFragment: Fragment() {
 
         val view =  inflater.inflate(R.layout.fragment_task_list, container, false)//Переводит xml в код (все элементы)
 
+        clickListenerAddandRemove(view)
 
         recycler = view.findViewById(R.id.recyclerView)
         recycler.layoutManager = LinearLayoutManager(context)//отвечает за расположение элементов на экране внутри recycler
@@ -73,7 +75,8 @@ class ListFragment: Fragment() {
         recyclerDate.adapter = adapterDate
         recyclerDate.scrollToPosition((listOfDate.size / 2) - 1)
 
-
+        var itemTouchHelper = ItemTouchHelper(SwipeToDelete(adapter, recycler))
+        itemTouchHelper.attachToRecyclerView(recycler)
 
         return view
     }
@@ -107,6 +110,33 @@ class ListFragment: Fragment() {
             listOfDate.add(DateItem(strDayOfWeek, dayOfMonth.toString()))
         }
     }
+
+
+    private fun clickListenerAddandRemove(view: View) {
+        view.findViewById<View>(R.id.add_item_button).setOnClickListener() {
+
+            val newItem =  Task(adapter.itemCount,"Заголовок1", "подзаголовок", emptyList<Int>(), -1,-1,-1,-1)
+            val rep: ItemRepository = ItemRepository()
+
+            rep.addItem(newItem)
+
+            val listener = object: AddItemInterface{
+                override fun addItem(item: Task) {
+                    if (activity is Navigatable){
+                        (activity as Navigatable).navigateTo(Navigatable.Screens.DETAIL_SCREEN, item)
+                    }
+
+                }
+            }
+
+            recycler.adapter?.notifyDataSetChanged()
+
+
+        }
+
+    }
+
+
 
 
 

@@ -1,14 +1,17 @@
 package com.example.todolist
 
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 
-class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterface?):RecyclerView.Adapter<ListTaskAdapter.NewItemViewHolder>() {
+class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterface?):RecyclerView.Adapter<ListTaskAdapter.NewItemViewHolder>(), MenuItem.OnMenuItemClickListener {
 
     companion object{
         const val TAG = "NewAdapter"
@@ -21,20 +24,36 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
         val holder = NewItemViewHolder(view)
 
         view.setOnClickListener{
-
-            //Toast.makeText(parent.context, "All Good", Toast.LENGTH_SHORT).show()
-
             val itemPosition = holder.adapterPosition
             listener?.onItemClicked(items[itemPosition])
         }
 
-        holder.button.setOnCreateContextMenuListener(contextMenuListener)
+        //holder.button.setOnCreateContextMenuListener(contextMenuListener)
+
+        holder.button.setOnClickListener{
+            val popup: PopupMenu = PopupMenu(parent.context, holder.button)
+            // popup.setOnMenuItemClickListener()
+            popup.inflate(R.menu.popup_menu)
+            popup.show()
+        }
 
         return holder
     }
 
     override fun onBindViewHolder(holder: NewItemViewHolder, position: Int) {
         holder.bind(items[position])
+    }
+
+    fun deleteItem(pos: Int, viewHolder: RecyclerView.ViewHolder){
+        val removeItem =items[pos]
+
+        items.removeAt(pos)
+        notifyItemRemoved(pos)
+
+        Snackbar.make(viewHolder.itemView, "$removeItem deleted.", Snackbar.LENGTH_LONG).setAction("UNDO"){
+            items.add(pos, removeItem)
+            notifyItemInserted(pos)
+        }.show()
     }
 
     fun setItems(tasks: List<Task>, newListener: ListenerInterface? = listener){
@@ -62,7 +81,27 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
         }
     }
 
+   /* public fun showPopup(view: View){
+        val popup: PopupMenu = PopupMenu(context, view)
+        // popup.setOnMenuItemClickListener()
+        popup.inflate(R.menu.popup_menu)
+        popup.show()
+    }*/
 
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            R.id.item1 ->{
+
+            }
+            R.id.item2 ->{
+
+            }
+            R.id.item3 ->{
+
+            }
+        }
+        return true
+    }
     
 }
 
