@@ -3,9 +3,6 @@ package com.example.todolist
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
-import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -46,7 +43,7 @@ class ListFragment: Fragment() {
 
         val view =  inflater.inflate(R.layout.fragment_task_list, container, false)//Переводит xml в код (все элементы)
 
-        clickListenerAddandRemove(view)
+        clickListenerAdd(view)
 
         recycler = view.findViewById(R.id.recyclerView)
         recycler.layoutManager = LinearLayoutManager(context)//отвечает за расположение элементов на экране внутри recycler
@@ -61,7 +58,7 @@ class ListFragment: Fragment() {
             }
         }
 
-        adapter = ListTaskAdapter(ItemRepository.instance.getItems(), listener)
+        adapter = ListTaskAdapter(ItemRepository.instance.getItems()!!, listener)
         adapter.contextMenuListener = this
 
 
@@ -121,26 +118,15 @@ class ListFragment: Fragment() {
     }
 
 
-    private fun clickListenerAddandRemove(view: View) {
+    private fun clickListenerAdd(view: View) {
         view.findViewById<View>(R.id.add_item_button).setOnClickListener() {
 
-            val newItem =  Task(adapter.itemCount,"Заголовок1", "подзаголовок", emptyList<Int>(), -1,-1,-1,-1)
-            val rep: ItemRepository = ItemRepository()
+            val newItem =  Task(adapter.itemCount,"", "", emptyList<Int>(), -1,-1,-1,-1)
+            adapter.addItem(newItem)
 
-            rep.addItem(newItem)
-
-            val listener = object: AddItemInterface{
-                override fun addItem(item: Task) {
-                    if (activity is Navigatable){
-                        (activity as Navigatable).navigateTo(Navigatable.Screens.DETAIL_SCREEN, item)
-                    }
-
-                }
+            if (activity is Navigatable){
+                (activity as Navigatable).navigateTo(Navigatable.Screens.DETAIL_SCREEN, newItem)
             }
-
-            recycler.adapter?.notifyDataSetChanged()
-
-
         }
 
     }

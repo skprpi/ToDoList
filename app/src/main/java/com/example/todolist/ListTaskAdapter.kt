@@ -44,6 +44,11 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
         holder.bind(items[position])
     }
 
+    fun addItem(item: Task){
+        items.add(item)
+        notifyDataSetChanged()
+    }
+
     fun deleteItem(pos: Int, viewHolder: RecyclerView.ViewHolder){
         val removeItem =items[pos]
 
