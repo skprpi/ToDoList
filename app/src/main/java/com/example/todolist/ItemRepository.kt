@@ -16,6 +16,7 @@ class ItemRepository {
                 item.subtitleText = task.subtitleText
                 item.notification = task.notification
                 item.selectedDays = task.selectedDays
+                item.notificationType = task.notificationType
                 return
             }
         }

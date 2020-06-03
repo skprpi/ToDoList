@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:gravity="center"
-
+        android:layout_marginTop="20dp"
         android:layout_height="wrap_content">
 
         <Button
@@ -103,6 +103,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -110,25 +111,91 @@
             android:id="@+id/option1"
             android:layout_width="100dp"
             android:layout_height="40dp"
-            android:layout_margin="15dp"
+            android:layout_marginHorizontal="15dp"
             android:background="@drawable/gray_rounded_bg"
-            android:text="1 час" />
+            android:text="нет" />
 
         <Button
             android:id="@+id/option2"
             android:layout_width="100dp"
             android:layout_height="40dp"
-            android:layout_margin="15dp"
+            android:layout_marginHorizontal="15dp"
             android:background="@drawable/gray_rounded_bg"
-            android:text="2 часа" />
+            android:text="5 минут" />
 
         <Button
             android:id="@+id/option3"
             android:layout_width="100dp"
             android:layout_height="40dp"
-            android:layout_margin="15dp"
+            android:layout_marginHorizontal="15dp"
             android:background="@drawable/gray_rounded_bg"
-            android:text="3 часа" />
+            android:text="10 минут" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/option4"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="15dp"
+            android:background="@drawable/gray_rounded_bg"
+            android:text="30 минут" />
+
+        <Button
+            android:id="@+id/option5"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="15dp"
+            android:background="@drawable/gray_rounded_bg"
+            android:text="1 час" />
+
+        <Button
+            android:id="@+id/option6"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="15dp"
+            android:background="@drawable/gray_rounded_bg"
+            android:text="2 часа" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/typeNotification1"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="15dp"
+            android:background="@drawable/gray_rounded_bg"
+            android:text="Будильник" />
+
+        <Button
+            android:id="@+id/typeNotification2"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="15dp"
+            android:background="@drawable/gray_rounded_bg"
+            android:text="Уведомление" />
+
+        <Button
+            android:id="@+id/typeNotification3"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="15dp"
+            android:background="@drawable/gray_rounded_bg"
+            android:text="НЕТ" />
 
     </LinearLayout>
 

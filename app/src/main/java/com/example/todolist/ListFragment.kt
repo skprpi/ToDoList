@@ -77,7 +77,7 @@ class ListFragment: Fragment() {
         recyclerDate.scrollToPosition((listOfDate.size / 2) - 1)
 
 
-        delIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete)!!//mistake-----------------------------------
+        delIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete)!!
 
 
 

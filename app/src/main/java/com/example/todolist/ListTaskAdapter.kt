@@ -76,7 +76,6 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
     class NewItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.title2)
         val subtitle: TextView = itemView.findViewById(R.id.subtitle)
-        val image: ImageView = itemView.findViewById(R.id.image2)
 
         val button = itemView.findViewById<Button>(R.id.option_new_xxx)
 

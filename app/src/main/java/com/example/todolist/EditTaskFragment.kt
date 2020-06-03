@@ -2,16 +2,11 @@ package com.example.todolist
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.Toast
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
@@ -25,6 +20,10 @@ class EditTaskFragment:  Fragment() {
     var timeNotificaionButton:List<Button>? = null
 
     var numButtonNotification: Int = -1
+
+    var typeNotificationButton:List<Button>? = null
+
+    var numTypeNotification: Int = -1
 
     var selectedDays:List<Button>? = null
     var selectedDaysBool = mutableListOf( false, false, false, false ,false, false ,false)
@@ -48,14 +47,17 @@ class EditTaskFragment:  Fragment() {
 
         initTimeNotification(view)
         initSelectedDays(view)
+        initTypeNotification(view)
 
         task?.let{
             view.findViewById<TextInputEditText>(R.id.name_task).setText(it.titleText)
             view.findViewById<TextInputEditText>(R.id.name2_task).setText(it.subtitleText)
             numButtonNotification = it.notification
             selectedDaysBool = it.selectedDays
-            rebootNotification(view)
+            numTypeNotification = it.notificationType
+            updateNotification(view)
             updateSelectedDays(view)
+            updateTypeNotification(view)
         }
 
 
@@ -66,8 +68,7 @@ class EditTaskFragment:  Fragment() {
     }
 
     @SuppressLint("ResourceType")
-    fun rebootNotification(view: View){
-        var counter = 0
+    fun updateNotification(view: View){
         for (item in timeNotificaionButton!!){
             if (numButtonNotification == timeNotificaionButton!!.indexOf(item)){
                 item.setBackgroundResource(buttonActiveBg)
@@ -76,7 +77,19 @@ class EditTaskFragment:  Fragment() {
                 item.setBackgroundResource(buttonNormalBg)
                 item.setTextColor(Color.BLACK)
             }
-            counter += 1
+        }
+    }
+
+    @SuppressLint("ResourceType")
+    fun updateTypeNotification(view: View){
+        for (item in typeNotificationButton!!){
+            if (numTypeNotification == typeNotificationButton!!.indexOf(item)){
+                item.setBackgroundResource(buttonActiveBg)
+                item.setTextColor(Color.WHITE)
+            } else{
+                item.setBackgroundResource(buttonNormalBg)
+                item.setTextColor(Color.BLACK)
+            }
         }
     }
 
@@ -127,11 +140,45 @@ class EditTaskFragment:  Fragment() {
 
 
     @SuppressLint("ResourceType")
+    fun initTypeNotification(view: View){
+        typeNotificationButton = arrayListOf(
+            view.findViewById<Button>(R.id.typeNotification1),
+            view.findViewById<Button>(R.id.typeNotification2),
+            view.findViewById<Button>(R.id.typeNotification3)
+        )
+
+        var counter = 0
+        for (item in typeNotificationButton!!){
+
+            item.setBackgroundResource(buttonNormalBg)
+            item.setTextColor(Color.BLACK)
+
+            item.setOnClickListener{
+                item.setTextColor(Color.WHITE)
+                item.setBackgroundResource(buttonActiveBg)
+
+                for (item2 in typeNotificationButton!!){
+                    if (item != item2){
+                        item2.setTextColor(Color.BLACK)
+                        item2.setBackgroundResource(buttonNormalBg)
+                    }
+                }
+                numTypeNotification = typeNotificationButton!!.indexOf(item)
+            }
+            counter += 1
+        }
+    }
+
+
+    @SuppressLint("ResourceType")
     fun initTimeNotification(view: View){
         timeNotificaionButton = arrayListOf(
             view.findViewById<Button>(R.id.option1),
             view.findViewById<Button>(R.id.option2),
-            view.findViewById<Button>(R.id.option3)
+            view.findViewById<Button>(R.id.option3),
+            view.findViewById<Button>(R.id.option4),
+            view.findViewById<Button>(R.id.option5),
+            view.findViewById<Button>(R.id.option6)
         )
 
         var counter = 0
@@ -164,6 +211,7 @@ class EditTaskFragment:  Fragment() {
             task = task?.copy(subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString())
             //task = task?.copy(notification = numButtonNotification)
             task = task?.copy(notification = numButtonNotification)
+            task = task?.copy(notificationType = numTypeNotification)
             //Toast.makeText(requireContext(), numButtonNotification.toString(), Toast.LENGTH_SHORT).show()
 
             task?.let{
