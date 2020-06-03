@@ -1,12 +1,17 @@
 package com.example.todolist
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
@@ -17,14 +22,18 @@ class EditTaskFragment:  Fragment() {
 
     var task: Task? = null
 
-    var timeNotificaionButton:List<View>? = null
+    var timeNotificaionButton:List<Button>? = null
 
     var numButtonNotification: Int = -1
+
+    var selectedDays:List<Button>? = null
+    var selectedDaysBool = mutableListOf( false, false, false, false ,false, false ,false)
 
     private var buttonNormalBg: Int = Color.parseColor("#FF0000")
     private var buttonActiveBg: Int = Color.parseColor("#FF8BC34A")
 
 
+    @SuppressLint("ResourceType")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         repository = ItemRepository.instance
 
@@ -33,20 +42,20 @@ class EditTaskFragment:  Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
-        //initTimeNotification(view)
-
-        //saveAll(view)
-
+        buttonNormalBg = R.drawable.gray_rounded_bg
+        buttonActiveBg = R.drawable.orange_rounded_bg
 
 
         initTimeNotification(view)
+        initSelectedDays(view)
 
         task?.let{
             view.findViewById<TextInputEditText>(R.id.name_task).setText(it.titleText)
             view.findViewById<TextInputEditText>(R.id.name2_task).setText(it.subtitleText)
             numButtonNotification = it.notification
-            Toast.makeText(requireContext(), numButtonNotification.toString(), Toast.LENGTH_SHORT).show()
+            selectedDaysBool = it.selectedDays
             rebootNotification(view)
+            updateSelectedDays(view)
         }
 
 
@@ -56,37 +65,92 @@ class EditTaskFragment:  Fragment() {
         return view
     }
 
+    @SuppressLint("ResourceType")
     fun rebootNotification(view: View){
         var counter = 0
         for (item in timeNotificaionButton!!){
             if (numButtonNotification == timeNotificaionButton!!.indexOf(item)){
-                item.setBackgroundColor(buttonActiveBg)
+                item.setBackgroundResource(buttonActiveBg)
+                item.setTextColor(Color.WHITE)
             } else{
-                item.setBackgroundColor(buttonNormalBg)
+                item.setBackgroundResource(buttonNormalBg)
+                item.setTextColor(Color.BLACK)
             }
             counter += 1
         }
     }
 
+    @SuppressLint("ResourceType")
+    fun initSelectedDays(view: View){
+        selectedDays = listOf(
+            view.findViewById<Button>(R.id.day1),
+            view.findViewById<Button>(R.id.day2),
+            view.findViewById<Button>(R.id.day3),
+            view.findViewById<Button>(R.id.day4),
+            view.findViewById<Button>(R.id.day5),
+            view.findViewById<Button>(R.id.day6),
+            view.findViewById<Button>(R.id.day7)
+        )
+
+        var counter = 0
+        for (item in selectedDays!!){
+            item.setTextColor(Color.BLACK)
+            item.setBackgroundResource(buttonNormalBg)
+            item.setOnClickListener{
+                if (selectedDaysBool.get(selectedDays!!.indexOf(item))){   /*selectedDays!!.indexOf(item)*/
+
+                    selectedDaysBool.set(selectedDays!!.indexOf(item), false)
+                    item.setTextColor(Color.BLACK)
+                    item.setBackgroundResource(buttonNormalBg)
+                } else{
+                    selectedDaysBool.set(selectedDays!!.indexOf(item), true)
+                    item.setTextColor(Color.WHITE)
+                    item.setBackgroundResource(buttonActiveBg)
+                }
+            }
+            counter += 1
+        }
+    }
+
+    @SuppressLint("ResourceType")
+    fun updateSelectedDays(view: View){
+        for (item in selectedDays!!) {
+            if (selectedDaysBool[selectedDays!!.indexOf(item)]){
+                item.setTextColor(Color.WHITE)
+                item.setBackgroundResource(buttonActiveBg)
+            } else{
+                item.setTextColor(Color.BLACK)
+                item.setBackgroundResource(buttonNormalBg)
+            }
+        }
+    }
+
+
+    @SuppressLint("ResourceType")
     fun initTimeNotification(view: View){
-        timeNotificaionButton = listOf(
-            view.findViewById<View>(R.id.option1),
-            view.findViewById<View>(R.id.option2),
-            view.findViewById<View>(R.id.option3)
+        timeNotificaionButton = arrayListOf(
+            view.findViewById<Button>(R.id.option1),
+            view.findViewById<Button>(R.id.option2),
+            view.findViewById<Button>(R.id.option3)
         )
 
         var counter = 0
         for (item in timeNotificaionButton!!){
-            item.setBackgroundColor(buttonNormalBg)
+
+            item.setBackgroundResource(buttonNormalBg)
+            item.setTextColor(Color.BLACK)
+
             item.setOnClickListener{
-                item.setBackgroundColor(buttonActiveBg)
+                item.setTextColor(Color.WHITE)
+                item.setBackgroundResource(buttonActiveBg)
+
                 for (item2 in timeNotificaionButton!!){
                     if (item != item2){
-                        item2.setBackgroundColor(buttonNormalBg)
+                        item2.setTextColor(Color.BLACK)
+                        item2.setBackgroundResource(buttonNormalBg)
                     }
                 }
                 numButtonNotification = timeNotificaionButton!!.indexOf(item)
-                Toast.makeText(requireContext(), numButtonNotification.toString(), Toast.LENGTH_SHORT).show()
             }
             counter += 1
         }
@@ -99,8 +163,8 @@ class EditTaskFragment:  Fragment() {
             task = task?.copy(titleText = view.findViewById<TextInputEditText>(R.id.name_task).text.toString())
             task = task?.copy(subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString())
             //task = task?.copy(notification = numButtonNotification)
-            task?.notification = numButtonNotification
-            Toast.makeText(requireContext(), numButtonNotification.toString(), Toast.LENGTH_SHORT).show()
+            task = task?.copy(notification = numButtonNotification)
+            //Toast.makeText(requireContext(), numButtonNotification.toString(), Toast.LENGTH_SHORT).show()
 
             task?.let{
                 ItemRepository.instance.updateTask(it)

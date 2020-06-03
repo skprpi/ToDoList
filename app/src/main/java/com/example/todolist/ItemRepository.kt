@@ -6,7 +6,7 @@ import android.graphics.Color
 class ItemRepository {
 
     private var listItems = mutableListOf(
-        Task(0,"Example", "подзаголовок", emptyList<Int>(), -1,-1,-1,-1)
+        Task(0,"Example", "подзаголовок", MutableList<Boolean>(7) {false}, -1,-1,-1,-1)
     )
 
     fun updateTask(task: Task){
@@ -14,6 +14,8 @@ class ItemRepository {
             if (item.id == task.id) {
                 item.titleText = task.titleText
                 item.subtitleText = task.subtitleText
+                item.notification = task.notification
+                item.selectedDays = task.selectedDays
                 return
             }
         }

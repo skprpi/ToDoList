@@ -121,7 +121,7 @@ class ListFragment: Fragment() {
     private fun clickListenerAdd(view: View) {
         view.findViewById<View>(R.id.add_item_button).setOnClickListener() {
 
-            val newItem =  Task(adapter.itemCount,"", "", emptyList<Int>(), -1,-1,-1,-1)
+            val newItem =  Task(adapter.itemCount,"", "", MutableList<Boolean>(7) {false}, -1,-1,-1,-1)
             adapter.addItem(newItem)
 
             if (activity is Navigatable){
