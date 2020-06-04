@@ -46,4 +46,66 @@
         app:layout_constraintStart_toEndOf="@+id/title2"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/day_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ПН"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image2" />
+
+    <TextView
+        android:id="@+id/day_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:text="ВТ"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image2" />
+
+    <TextView
+        android:id="@+id/day_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:text="СР"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image2" />
+
+    <TextView
+        android:id="@+id/day_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:text="ЧТ"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image2" />
+
+    <TextView
+        android:id="@+id/day_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="136dp"
+        android:text="ПТ"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image2" />
+
+    <TextView
+        android:id="@+id/day_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="166dp"
+        android:text="СБ"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image2" />
+
+    <TextView
+        android:id="@+id/day_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:text="ВС"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
