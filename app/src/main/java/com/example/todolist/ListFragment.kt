@@ -58,7 +58,7 @@ class ListFragment: Fragment() {
             }
         }
 
-        adapter = ListTaskAdapter(ItemRepository.instance.getItems(), listener)
+        adapter = ListTaskAdapter(ItemRepository.instance.getItems()!!, listener)
         adapter.contextMenuListener = this
 
 

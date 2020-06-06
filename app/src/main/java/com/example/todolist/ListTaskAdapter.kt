@@ -1,15 +1,17 @@
 package com.example.todolist
 
+import android.app.ActionBar
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.TextView
+import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import kotlin.coroutines.coroutineContext
 
 class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterface?):RecyclerView.Adapter<ListTaskAdapter.NewItemViewHolder>(){
 
@@ -17,15 +19,18 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
         const val TAG = "NewAdapter"
     }
 
+
     lateinit var contextMenuListener: View.OnCreateContextMenuListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewItemViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
         val holder = NewItemViewHolder(view)
-        val itemPosition = holder.adapterPosition
+
 
         view.setOnClickListener{
+            val itemPosition = holder.adapterPosition
             listener?.onItemClicked(items[itemPosition])
+
         }
 
         //holder.button.setOnCreateContextMenuListener(contextMenuListener)
@@ -41,7 +46,7 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
 
                     }
                     R.id.item2 ->{
-                        deleteItem(itemPosition + 1, holder)
+                        deleteItem(holder.adapterPosition, holder)
                     }
                     R.id.item3 ->{
 
@@ -71,10 +76,12 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
 
         val removeItem =items[pos]
 
+       // ItemRepository.instance.removeItem(removeItem)
+
         items.removeAt(pos)
         notifyItemRemoved(pos)
 
-        ItemRepository.instance.removeItem(items[pos])
+
 
         Snackbar.make(viewHolder.itemView, "$removeItem deleted.", Snackbar.LENGTH_LONG).setAction("UNDO"){
             items.add(pos, removeItem)
@@ -96,9 +103,8 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
 
     class NewItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.title2)
-        val subtitle: TextView = itemView.findViewById(R.id.subtitle)
 
-        val dayRepeatTask = mutableListOf<View>(
+        var dayRepeatTask = mutableListOf<View>(
             itemView.findViewById(R.id.day_1),
             itemView.findViewById(R.id.day_2),
             itemView.findViewById(R.id.day_3),
@@ -112,7 +118,36 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
 
         fun bind(item: Task){
             title.text = item.titleText
-            subtitle.text = item.subtitleText
+
+            /*if (!item.selectedDays[0]){
+                for (element in 0..6){
+                    if (item.selectedDays[element]){
+                        //dayRepeatTask[element].marginStart = 15
+                       /* val lp  =dayRepeatTask[element].layoutParams as ConstraintLayout.LayoutParams//(
+
+                        lp.leftToLeft = R.id.parent_constraint
+                        lp.startToStart= R.id.parent_constraint
+                        lp.bottomToBottom = R.id.parent_constraint
+
+                        lp.setMargins(100,100,100,((50* itemView.context.resources.displayMetrics.density).toInt()))
+                        lp.goneBottomMargin = ((50* itemView.context.resources.displayMetrics.density).toInt())
+                        dayRepeatTask[element].requestLayout()*/
+                        Toast.makeText(itemView.context, element.toString(), Toast.LENGTH_SHORT).show()
+                        val cl: ConstraintLayout = ConstraintLayout(itemView.context)
+                        val constraintSet = ConstraintSet()
+                        constraintSet.clone(cl)
+                        constraintSet.clear(R.id.day_2, ConstraintSet.START )
+                       // constraintSet.clear(dayRepeatTask[element].id, ConstraintSet.END )
+                        constraintSet.connect(R.id.day_2, ConstraintSet.START, dayRepeatTask[element - 1].id, ConstraintSet.END)
+                        constraintSet.setMargin(R.id.day_2, ConstraintSet.START, 0)
+                        constraintSet.constrainWidth(R.id.day_2, ConstraintSet.MATCH_CONSTRAINT)
+                        constraintSet.applyTo(cl)
+
+                       // dayRepeatTask[element].layoutParams = constraintSet
+                        break
+                    }
+                }
+            }*/
 
             for (element in 0..6){
                 if (!item.selectedDays[element]){
@@ -133,5 +168,6 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
 
     
 }
+
 
 

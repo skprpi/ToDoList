@@ -1,111 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#F8FFFFFF"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="130dp"
+    android:id="@+id/parent_constraint"
+    android:background="#F8FFFFFF">
 
-    <ImageView
-        android:id="@+id/image2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/title2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Text1"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/image2"
-        app:layout_constraintTop_toTopOf="@id/image2"
-        app:layout_constraintBottom_toTopOf="@id/subtitle"
-        android:text="Text1"/>
-
-    <TextView
-        android:id="@+id/subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello"
-        app:layout_constraintStart_toStartOf="@id/title2"
-        app:layout_constraintTop_toBottomOf="@id/title2"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
 
         android:id="@+id/option_new_xxx"
         android:layout_width="30dp"
-        android:layout_height="50dp"
-        android:text=":"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ic_more_vert_24px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/title2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16" />
 
     <TextView
         android:id="@+id/day_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+        style="@style/RepeatedDays"
+
+        android:layout_marginStart="16dp"
         android:text="ПН"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image2" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/day_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
+        style="@style/RepeatedDays"
+        android:layout_marginStart="5dp"
         android:text="ВТ"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image2" />
+        app:layout_constraintStart_toEndOf="@+id/day_1" />
 
     <TextView
         android:id="@+id/day_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
+        style="@style/RepeatedDays"
+        android:layout_marginStart="5dp"
         android:text="СР"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image2" />
+        app:layout_constraintStart_toEndOf="@+id/day_2" />
 
     <TextView
         android:id="@+id/day_4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        style="@style/RepeatedDays"
+        android:layout_marginStart="5dp"
         android:text="ЧТ"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image2" />
+        app:layout_constraintStart_toEndOf="@+id/day_3" />
 
     <TextView
         android:id="@+id/day_5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
+        style="@style/RepeatedDays"
+        android:layout_marginStart="5dp"
         android:text="ПТ"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image2" />
+        app:layout_constraintStart_toEndOf="@+id/day_4" />
 
     <TextView
         android:id="@+id/day_6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="166dp"
+        style="@style/RepeatedDays"
+        android:layout_marginStart="5dp"
         android:text="СБ"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image2" />
+        app:layout_constraintStart_toEndOf="@+id/day_5" />
 
     <TextView
         android:id="@+id/day_7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
+        style="@style/RepeatedDays"
+        android:layout_marginStart="5dp"
         android:text="ВС"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image2" />
+        app:layout_constraintStart_toEndOf="@+id/day_6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

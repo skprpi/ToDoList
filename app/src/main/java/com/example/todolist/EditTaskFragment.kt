@@ -16,6 +16,7 @@ class EditTaskFragment:  Fragment() {
     lateinit var repository: ItemRepository
 
     var task: Task? = null
+    var isEditMode = false
 
     var timeNotificaionButton:List<Button>? = null
 
@@ -36,6 +37,7 @@ class EditTaskFragment:  Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         repository = ItemRepository.instance
 
+        isEditMode = task != null// Mode
 
         task = arguments?.getParcelable<Task>(ARG_TASK) as Task
 
@@ -206,17 +208,44 @@ class EditTaskFragment:  Fragment() {
 
 
     fun saveAll(view: View){
+
         val buttonSave = view.findViewById<View>(R.id.save_options).setOnClickListener{
-            task = task?.copy(titleText = view.findViewById<TextInputEditText>(R.id.name_task).text.toString())
-            task = task?.copy(subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString())
-            //task = task?.copy(notification = numButtonNotification)
-            task = task?.copy(notification = numButtonNotification)
-            task = task?.copy(notificationType = numTypeNotification)
+            if (isEditMode) {
+                task = task?.copy(
+                    titleText = view.findViewById<TextInputEditText>(R.id.name_task).text.toString(),
+                    subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString(),
+                    notification = numButtonNotification,
+                    notificationType = numTypeNotification,
+                    selectedDays = selectedDaysBool
+                )
+                ItemRepository.instance.updateTask(task!!)
+            }else{
+                task = Task(
+                    id = 0,
+                    titleText = view.findViewById<TextInputEditText>(R.id.name_task).text.toString(),
+                    subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString(),
+                    notification = numButtonNotification,
+                    notificationType = numTypeNotification,
+                    selectedDays = selectedDaysBool,
+                    timeEnd = 0,
+                    timeStart = 0
+                )
+                ItemRepository.instance.addItem(task!!)
+            }
+            /*task = task?.copy(
+                titleText = view.findViewById<TextInputEditText>(R.id.name_task).text.toString(),
+                subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString(),
+                notification = numButtonNotification,
+                notificationType = numTypeNotification,
+                selectedDays = selectedDaysBool
+            )
+            ItemRepository.instance.updateTask(task!!)*/
+
             //Toast.makeText(requireContext(), numButtonNotification.toString(), Toast.LENGTH_SHORT).show()
 
-            task?.let{
-                ItemRepository.instance.updateTask(it)
-            }
+            /*task?.let{
+
+            }*/
         }
     }
 
