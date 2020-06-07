@@ -1,11 +1,14 @@
 package com.example.todolist
 
+import android.content.Context
 import android.graphics.Color
+import java.util.concurrent.Executors
 
 
 class ItemRepository {
 
     private var listItems= mutableListOf<Task>()
+    private lateinit var cont: Context
 
     fun updateTask(task: Task){
         for (item in listItems) {
@@ -20,11 +23,16 @@ class ItemRepository {
         }
     }
 
-    fun getItems() = listItems
+    fun getItems(): List<Task>{
+        return Application.Db.getInstance(cont)?.getTaskDao()?.getAll() ?: emptyList()
+    }
+
 
     fun addItem(item: Task){
-        item.id = listItems[listItems.size - 1].id + 1
-        listItems.add(item)
+        Executors.newSingleThreadExecutor().execute{
+            Application.Db.getInstance(cont)?.getTaskDao()?.insert(item)
+        }
+
     }
 
     fun removeItem(item: Task){
@@ -32,12 +40,12 @@ class ItemRepository {
     }
 
 
-
-    fun newInstance(): ItemRepository{
-        return instance
-    }
-
     companion object {
-        val instance = ItemRepository()
+        private val instance = ItemRepository()
+
+        fun newInstance(context: Context): ItemRepository{
+            instance.cont = context
+            return instance
+        }
     }
 }

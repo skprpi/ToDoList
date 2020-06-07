@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
+import java.util.concurrent.Executors
 
 
 class ListFragment: Fragment() {
@@ -58,7 +59,13 @@ class ListFragment: Fragment() {
             }
         }
 
-        adapter = ListTaskAdapter(ItemRepository.instance.getItems()!!, listener)
+        adapter = ListTaskAdapter(listener)
+        Executors.newSingleThreadExecutor().execute{
+            val items = ItemRepository.newInstance(requireContext()).getItems()
+            recycler.post{
+                adapter.setItems(items)
+            }
+        }
         adapter.contextMenuListener = this
 
 
@@ -122,11 +129,11 @@ class ListFragment: Fragment() {
     private fun clickListenerAdd(view: View) {
         view.findViewById<View>(R.id.add_item_button).setOnClickListener() {
 
-            val newItem =  Task(adapter.itemCount,"", "", MutableList<Boolean>(7) {false}, -1,-1,-1,-1)
-            adapter.addItem(newItem)
+            //val newItem =  Task(adapter.itemCount,"", "", MutableList<Boolean>(7) {false}, -1,-1,-1,-1)
+            //adapter.addItem(newItem)
 
             if (activity is Navigatable){
-                (activity as Navigatable).navigateTo(Navigatable.Screens.DETAIL_SCREEN, newItem)
+                (activity as Navigatable).navigateTo(Navigatable.Screens.DETAIL_SCREEN, null)
             }
         }
 

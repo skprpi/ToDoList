@@ -6,7 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import com.example.todolist.ItemRepository.Companion.instance
+
 
 
 class MainActivity : AppCompatActivity(), Navigatable {
@@ -54,40 +54,6 @@ class MainActivity : AppCompatActivity(), Navigatable {
             supportFragmentManager.popBackStack()
 
     }
-
-
-
-
-
-
-
-    /* fun clickListenerAddandRemove(){
-         findViewById<View>(R.id.addButton).setOnClickListener(){
-
-             newItem = NewItem("", "", Color.CYAN)
-
-             if (items.size > 0)
-                 items.add(items.indexOf(items.last()), newItem)
-             else
-                 items.add(0, newItem)
-
-             recycler.adapter?.notifyDataSetChanged()
-
-
-             val activityList: ActivityList = ActivityList()
-
-             val intent = Intent(this, activityList::class.java)
-             startActivity(intent)
-
-         }
-
-         findViewById<View>(R.id.removeButton).setOnClickListener(){
-             if (items.size > 0) {
-                 items.removeAt(items.lastIndexOf(items.last()))
-                 recycler.adapter?.notifyDataSetChanged()
-             }
-         }
-     }*/
 
 }
 

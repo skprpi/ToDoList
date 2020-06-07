@@ -1,15 +1,42 @@
 package com.example.todolist
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Task(var id: Int,
+@Entity
+data class Task(@PrimaryKey(autoGenerate = true)
+                var id: Int ,
                 var titleText:String,
                 var subtitleText: String,
-                var selectedDays: MutableList<Boolean>,
+                var selectedDays: Int,
                 var timeStart: Long,
                 var timeEnd : Long,
                 var notification: Int,
                 var notificationType : Int
-) : Parcelable
+) : Parcelable{
+
+    companion object{
+        fun selectedToInt(list: MutableList<Boolean>): Int{
+            var k = 0
+            for (i in 0..6){
+                val d = if (list[i]) 1  else 0
+
+                k = (k * 10) + d
+            }
+            return k
+        }
+
+        fun selectedToBool(p: Int): MutableList<Boolean>{
+            var mList = mutableListOf(false, false, false, false, false, false, false)
+            var k = p
+            for (element in 0..6){
+                mList[6 - element] = p % 10 != 0
+                k /= 10
+            }
+            return mList
+        }
+    }
+}

@@ -1,6 +1,7 @@
 package com.example.todolist
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -35,11 +36,11 @@ class EditTaskFragment:  Fragment() {
 
     @SuppressLint("ResourceType")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        repository = ItemRepository.instance
+        repository = ItemRepository.newInstance(requireContext())
 
         isEditMode = task != null// Mode
 
-        task = arguments?.getParcelable<Task>(ARG_TASK) as Task
+        task = arguments?.getParcelable<Task>(ARG_TASK)
 
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
@@ -55,7 +56,7 @@ class EditTaskFragment:  Fragment() {
             view.findViewById<TextInputEditText>(R.id.name_task).setText(it.titleText)
             view.findViewById<TextInputEditText>(R.id.name2_task).setText(it.subtitleText)
             numButtonNotification = it.notification
-            selectedDaysBool = it.selectedDays
+            selectedDaysBool = Task.selectedToBool(it.selectedDays)
             numTypeNotification = it.notificationType
             updateNotification(view)
             updateSelectedDays(view)
@@ -216,9 +217,9 @@ class EditTaskFragment:  Fragment() {
                     subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString(),
                     notification = numButtonNotification,
                     notificationType = numTypeNotification,
-                    selectedDays = selectedDaysBool
+                    selectedDays = Task.selectedToInt(selectedDaysBool)
                 )
-                ItemRepository.instance.updateTask(task!!)
+                ItemRepository.newInstance(requireContext()).updateTask(task!!)
             }else{
                 task = Task(
                     id = 0,
@@ -226,26 +227,14 @@ class EditTaskFragment:  Fragment() {
                     subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString(),
                     notification = numButtonNotification,
                     notificationType = numTypeNotification,
-                    selectedDays = selectedDaysBool,
+                    selectedDays = Task.selectedToInt(selectedDaysBool),
                     timeEnd = 0,
                     timeStart = 0
                 )
-                ItemRepository.instance.addItem(task!!)
+                ItemRepository.newInstance(requireContext()).addItem(task!!)
+
             }
-            /*task = task?.copy(
-                titleText = view.findViewById<TextInputEditText>(R.id.name_task).text.toString(),
-                subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString(),
-                notification = numButtonNotification,
-                notificationType = numTypeNotification,
-                selectedDays = selectedDaysBool
-            )
-            ItemRepository.instance.updateTask(task!!)*/
-
-            //Toast.makeText(requireContext(), numButtonNotification.toString(), Toast.LENGTH_SHORT).show()
-
-            /*task?.let{
-
-            }*/
+            (activity as Navigatable).goBack()
         }
     }
 

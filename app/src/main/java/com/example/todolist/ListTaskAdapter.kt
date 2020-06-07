@@ -13,10 +13,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlin.coroutines.coroutineContext
 
-class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterface?):RecyclerView.Adapter<ListTaskAdapter.NewItemViewHolder>(){
+class ListTaskAdapter( var listener: ListenerInterface?):RecyclerView.Adapter<ListTaskAdapter.NewItemViewHolder>(){
+
+    val items = mutableListOf<Task>()
+
 
     companion object{
         const val TAG = "NewAdapter"
+    }
+
+    fun setList(data: MutableList<Task>){
+        items.clear()
+        items.addAll(data)
+        notifyDataSetChanged()
     }
 
 
@@ -76,8 +85,6 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
 
         val removeItem =items[pos]
 
-       // ItemRepository.instance.removeItem(removeItem)
-
         items.removeAt(pos)
         notifyItemRemoved(pos)
 
@@ -119,42 +126,16 @@ class ListTaskAdapter(val items: MutableList<Task>, var listener: ListenerInterf
         fun bind(item: Task){
             title.text = item.titleText
 
-            /*if (!item.selectedDays[0]){
-                for (element in 0..6){
-                    if (item.selectedDays[element]){
-                        //dayRepeatTask[element].marginStart = 15
-                       /* val lp  =dayRepeatTask[element].layoutParams as ConstraintLayout.LayoutParams//(
-
-                        lp.leftToLeft = R.id.parent_constraint
-                        lp.startToStart= R.id.parent_constraint
-                        lp.bottomToBottom = R.id.parent_constraint
-
-                        lp.setMargins(100,100,100,((50* itemView.context.resources.displayMetrics.density).toInt()))
-                        lp.goneBottomMargin = ((50* itemView.context.resources.displayMetrics.density).toInt())
-                        dayRepeatTask[element].requestLayout()*/
-                        Toast.makeText(itemView.context, element.toString(), Toast.LENGTH_SHORT).show()
-                        val cl: ConstraintLayout = ConstraintLayout(itemView.context)
-                        val constraintSet = ConstraintSet()
-                        constraintSet.clone(cl)
-                        constraintSet.clear(R.id.day_2, ConstraintSet.START )
-                       // constraintSet.clear(dayRepeatTask[element].id, ConstraintSet.END )
-                        constraintSet.connect(R.id.day_2, ConstraintSet.START, dayRepeatTask[element - 1].id, ConstraintSet.END)
-                        constraintSet.setMargin(R.id.day_2, ConstraintSet.START, 0)
-                        constraintSet.constrainWidth(R.id.day_2, ConstraintSet.MATCH_CONSTRAINT)
-                        constraintSet.applyTo(cl)
-
-                       // dayRepeatTask[element].layoutParams = constraintSet
-                        break
-                    }
-                }
-            }*/
+            var k = item.selectedDays
 
             for (element in 0..6){
-                if (!item.selectedDays[element]){
-                    dayRepeatTask[element].visibility = View.GONE
+
+                if (k % 10 == 0){
+                    dayRepeatTask[6 - element].visibility = View.GONE
                 } else{
-                    dayRepeatTask[element].visibility = View.VISIBLE
+                    dayRepeatTask[6 - element].visibility = View.VISIBLE
                 }
+                k /= 10
             }
         }
     }
