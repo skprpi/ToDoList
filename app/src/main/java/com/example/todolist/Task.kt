@@ -7,8 +7,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity
-data class Task(@PrimaryKey(autoGenerate = true)
-                var id: Int ,
+data class Task(
                 var titleText:String,
                 var subtitleText: String,
                 var selectedDays: Int,
@@ -17,6 +16,8 @@ data class Task(@PrimaryKey(autoGenerate = true)
                 var notification: Int,
                 var notificationType : Int
 ) : Parcelable{
+    @PrimaryKey(autoGenerate = true)
+    var id = 0
 
     companion object{
         fun selectedToInt(list: MutableList<Boolean>): Int{

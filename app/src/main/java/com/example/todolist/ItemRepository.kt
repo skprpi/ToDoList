@@ -11,16 +11,7 @@ class ItemRepository {
     private lateinit var cont: Context
 
     fun updateTask(task: Task){
-        for (item in listItems) {
-            if (item.id == task.id) {
-                item.titleText = task.titleText
-                item.subtitleText = task.subtitleText
-                item.notification = task.notification
-                item.selectedDays = task.selectedDays
-                item.notificationType = task.notificationType
-                return
-            }
-        }
+        Application.Db.getInstance(cont)?.getTaskDao()?.update(task)
     }
 
     fun getItems(): List<Task>{

@@ -4,10 +4,10 @@ import androidx.room.*
 
 @Dao
 interface TaskDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(task: Task)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(task: Task)
 
     @Delete

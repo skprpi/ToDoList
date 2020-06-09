@@ -57,7 +57,7 @@ class ListFragment: Fragment() {
         }
 
         adapter = ListTaskAdapter(listener)
-        Executors.newSingleThreadExecutor().execute{
+        Executors.newSingleThreadExecutor().execute{//Фоновый поток
             val items = ItemRepository.newInstance(requireContext()).getItems()
             recycler.post{
                 adapter.setItems(items)

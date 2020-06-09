@@ -11,6 +11,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import java.util.concurrent.Executors
 
 class EditTaskFragment:  Fragment() {
 
@@ -38,9 +39,8 @@ class EditTaskFragment:  Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         repository = ItemRepository.newInstance(requireContext())
 
-        isEditMode = task != null// Mode
-
         task = arguments?.getParcelable<Task>(ARG_TASK)
+        isEditMode = task != null// Mode
 
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
@@ -219,10 +219,11 @@ class EditTaskFragment:  Fragment() {
                     notificationType = numTypeNotification,
                     selectedDays = Task.selectedToInt(selectedDaysBool)
                 )
-                ItemRepository.newInstance(requireContext()).updateTask(task!!)
+                Executors.newSingleThreadExecutor().execute{
+                    ItemRepository.newInstance(requireContext()).updateTask(task!!)
+                }
             }else{
                 task = Task(
-                    id = 0,
                     titleText = view.findViewById<TextInputEditText>(R.id.name_task).text.toString(),
                     subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString(),
                     notification = numButtonNotification,
@@ -231,7 +232,9 @@ class EditTaskFragment:  Fragment() {
                     timeEnd = 0,
                     timeStart = 0
                 )
-                ItemRepository.newInstance(requireContext()).addItem(task!!)
+                Executors.newSingleThreadExecutor().execute {
+                    ItemRepository.newInstance(requireContext()).addItem(task!!)
+                }
 
             }
             (activity as Navigatable).goBack()
