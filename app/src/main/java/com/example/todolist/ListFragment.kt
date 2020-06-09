@@ -39,9 +39,6 @@ class ListFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-
-
-
         val view =  inflater.inflate(R.layout.fragment_task_list, container, false)//Переводит xml в код (все элементы)
 
         clickListenerAdd(view)
@@ -68,11 +65,7 @@ class ListFragment: Fragment() {
         }
         adapter.contextMenuListener = this
 
-
-
         recycler.adapter = adapter
-
-
 
         val recyclerDate = view.findViewById<RecyclerView>(R.id.recyclerDate)
         recyclerDate.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)//отвечает за расположение элементов на экране внутри recycler
@@ -84,12 +77,9 @@ class ListFragment: Fragment() {
         recyclerDate.adapter = adapterDate
         recyclerDate.scrollToPosition((listOfDate.size / 2) - 1)
 
-
         delIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete)!!
 
-
-
-        var itemTouchHelper = ItemTouchHelper(SwipeToDelete(adapter, recycler,  delIcon))
+        val itemTouchHelper = ItemTouchHelper(SwipeToDelete(adapter, recycler,  delIcon, requireContext()))
         itemTouchHelper.attachToRecyclerView(recycler)
 
         return view
@@ -120,7 +110,6 @@ class ListFragment: Fragment() {
             dayOfWeek = (dayOfWeek + 5) % 7
             val strDayOfWeek = dayOfWeekList[dayOfWeek]
 
-
             listOfDate.add(DateItem(strDayOfWeek, dayOfMonth.toString()))
         }
     }
@@ -128,9 +117,6 @@ class ListFragment: Fragment() {
 
     private fun clickListenerAdd(view: View) {
         view.findViewById<View>(R.id.add_item_button).setOnClickListener() {
-
-            //val newItem =  Task(adapter.itemCount,"", "", MutableList<Boolean>(7) {false}, -1,-1,-1,-1)
-            //adapter.addItem(newItem)
 
             if (activity is Navigatable){
                 (activity as Navigatable).navigateTo(Navigatable.Screens.DETAIL_SCREEN, null)

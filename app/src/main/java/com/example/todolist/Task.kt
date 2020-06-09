@@ -33,7 +33,7 @@ data class Task(@PrimaryKey(autoGenerate = true)
             var mList = mutableListOf(false, false, false, false, false, false, false)
             var k = p
             for (element in 0..6){
-                mList[6 - element] = p % 10 != 0
+                mList[6 - element] = k % 10 != 0
                 k /= 10
             }
             return mList

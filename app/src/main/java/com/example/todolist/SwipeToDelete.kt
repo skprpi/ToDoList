@@ -1,5 +1,6 @@
 package com.example.todolist
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -11,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import java.util.Collections.swap
 import kotlin.coroutines.coroutineContext
 
-class SwipeToDelete(var adapter: ListTaskAdapter,var  recycler: RecyclerView, val delIcon: Drawable) : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+class SwipeToDelete(var adapter: ListTaskAdapter,var  recycler: RecyclerView, val delIcon: Drawable, val cont: Context) : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
 
     private var swipeBackgrowndR: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
     private var swipeBackgrowndL: ColorDrawable = ColorDrawable(Color.parseColor("#FF8BC34A"))
@@ -22,7 +23,7 @@ class SwipeToDelete(var adapter: ListTaskAdapter,var  recycler: RecyclerView, va
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        var pos = viewHolder.adapterPosition
+        val pos = viewHolder.adapterPosition
         val targetPosition = target.adapterPosition
 
         adapter.items[pos] = adapter.items[targetPosition].also {
@@ -34,10 +35,10 @@ class SwipeToDelete(var adapter: ListTaskAdapter,var  recycler: RecyclerView, va
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        var pos = viewHolder.adapterPosition
+        val pos = viewHolder.adapterPosition
         when(direction){
             ItemTouchHelper.LEFT->{
-                adapter.deleteItem(pos, viewHolder)
+                adapter.deleteItem(pos, viewHolder, cont)
             }
             ItemTouchHelper.RIGHT->{
 

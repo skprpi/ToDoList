@@ -1,6 +1,7 @@
 package com.example.todolist
 
 import android.app.ActionBar
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import java.util.concurrent.Executors
 import kotlin.coroutines.coroutineContext
 
 class ListTaskAdapter( var listener: ListenerInterface?):RecyclerView.Adapter<ListTaskAdapter.NewItemViewHolder>(){
@@ -55,7 +57,7 @@ class ListTaskAdapter( var listener: ListenerInterface?):RecyclerView.Adapter<Li
 
                     }
                     R.id.item2 ->{
-                        deleteItem(holder.adapterPosition, holder)
+                        deleteItem(holder.adapterPosition, holder, parent.context)
                     }
                     R.id.item3 ->{
 
@@ -78,22 +80,31 @@ class ListTaskAdapter( var listener: ListenerInterface?):RecyclerView.Adapter<Li
         notifyDataSetChanged()
     }
 
-    fun deleteItem(pos: Int, viewHolder: RecyclerView.ViewHolder){
+    fun deleteItem(pos: Int, viewHolder: RecyclerView.ViewHolder, cont: Context){
         if (items.size == 0){
             return
         }
-
         val removeItem =items[pos]
+        ItemRepository.newInstance(cont).removeItem(items[pos])
 
-        items.removeAt(pos)
-        notifyItemRemoved(pos)
+        Executors.newSingleThreadExecutor().execute{
+            val items = ItemRepository.newInstance(cont).getItems()
+            setItems(items)
+        }
+        notifyDataSetChanged()
 
+        /*Snackbar.make(viewHolder.itemView, "$removeItem deleted.", Snackbar.LENGTH_LONG).setAction("UNDO"){
+            //items.add(pos, removeItem)
+            //notifyItemInserted(pos)
 
+            ItemRepository.newInstance(cont).addItem(removeItem)
 
-        Snackbar.make(viewHolder.itemView, "$removeItem deleted.", Snackbar.LENGTH_LONG).setAction("UNDO"){
-            items.add(pos, removeItem)
-            notifyItemInserted(pos)
-        }.show()
+            Executors.newSingleThreadExecutor().execute{
+                val items = ItemRepository.newInstance(cont).getItems()
+                setItems(items)
+            }
+            notifyDataSetChanged()
+        }.show()*/
     }
 
     fun setItems(tasks: List<Task>, newListener: ListenerInterface? = listener){
@@ -129,7 +140,6 @@ class ListTaskAdapter( var listener: ListenerInterface?):RecyclerView.Adapter<Li
             var k = item.selectedDays
 
             for (element in 0..6){
-
                 if (k % 10 == 0){
                     dayRepeatTask[6 - element].visibility = View.GONE
                 } else{

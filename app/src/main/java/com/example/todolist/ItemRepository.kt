@@ -36,7 +36,10 @@ class ItemRepository {
     }
 
     fun removeItem(item: Task){
-        listItems.remove(item)
+        //listItems.remove(item)
+        Executors.newSingleThreadExecutor().execute{
+            Application.Db.getInstance(cont)?.getTaskDao()?.delete(item)
+        }
     }
 
 
