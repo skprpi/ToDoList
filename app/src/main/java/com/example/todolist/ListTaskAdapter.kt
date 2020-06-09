@@ -138,12 +138,12 @@ class ListTaskAdapter( var listener: ListenerInterface?):RecyclerView.Adapter<Li
         fun bind(item: Task){
             title.text = item.titleText
 
-
-            for (element in item.selectedDays){
-                if (element){
-                    dayRepeatTask[item.selectedDays.indexOf(element)].visibility = View.GONE
+            for (element in 0..6){
+                if (item.selectedDays[element]){
+                    dayRepeatTask[element].visibility = View.VISIBLE
                 } else{
-                    dayRepeatTask[item.selectedDays.indexOf(element)].visibility = View.VISIBLE
+                    dayRepeatTask[element].visibility = View.GONE
+
                 }
             }
         }

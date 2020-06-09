@@ -26,9 +26,16 @@ class SelectedDayConverter(){
 
     @TypeConverter
     fun toBoolList(str: String): MutableList<Boolean>{
-        val split = str.split(",")
+
         val list = mutableListOf(false, false, false, false, false, false, false)
+        if (str.isEmpty()){
+            return list
+        }
+        val split = str.split(",")
         for (el in split){
+            if (el.isEmpty()){
+                continue
+            }
             list[dayOfWeekList.indexOf(el)] = true
         }
         return list

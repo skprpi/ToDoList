@@ -74,6 +74,7 @@ class ListFragment: Fragment() {
 
         adapterDate.setClickListener {
             nowPosition = it
+
             loadData()
         }
 
