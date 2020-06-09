@@ -13,6 +13,9 @@ interface TaskDao {
     @Delete
     fun delete(task: Task)
 
+    @Query("SELECT * FROM Task WHERE selectedDays LIKE '%' || :day || '%'")
+    fun getTaskByDay(day: String): List<Task>
+
     @Query("SELECT * FROM Task")
     fun getAll() : List<Task>
 }

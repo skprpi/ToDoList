@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_constraint"
     android:layout_width="match_parent"
     android:layout_height="130dp"
-    android:id="@+id/parent_constraint"
     android:background="#F8FFFFFF">
 
 
@@ -23,8 +23,8 @@
     <Button
 
         android:id="@+id/option_new_xxx"
-        android:layout_width="27dp"
-        android:layout_height="27dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/ic_more_vert_24px"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,6 +33,7 @@
         app:layout_constraintVertical_bias="0.16" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="11dp"

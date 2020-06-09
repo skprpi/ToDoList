@@ -56,7 +56,7 @@ class EditTaskFragment:  Fragment() {
             view.findViewById<TextInputEditText>(R.id.name_task).setText(it.titleText)
             view.findViewById<TextInputEditText>(R.id.name2_task).setText(it.subtitleText)
             numButtonNotification = it.notification
-            selectedDaysBool = Task.selectedToBool(it.selectedDays)
+            selectedDaysBool = it.selectedDays
             numTypeNotification = it.notificationType
             updateNotification(view)
             updateSelectedDays(view)
@@ -217,18 +217,19 @@ class EditTaskFragment:  Fragment() {
                     subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString(),
                     notification = numButtonNotification,
                     notificationType = numTypeNotification,
-                    selectedDays = Task.selectedToInt(selectedDaysBool)
+                    selectedDays = selectedDaysBool
                 )
                 Executors.newSingleThreadExecutor().execute{
                     ItemRepository.newInstance(requireContext()).updateTask(task!!)
                 }
             }else{
                 task = Task(
+                    id = 0,
                     titleText = view.findViewById<TextInputEditText>(R.id.name_task).text.toString(),
                     subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString(),
                     notification = numButtonNotification,
                     notificationType = numTypeNotification,
-                    selectedDays = Task.selectedToInt(selectedDaysBool),
+                    selectedDays = selectedDaysBool,
                     timeEnd = 0,
                     timeStart = 0
                 )

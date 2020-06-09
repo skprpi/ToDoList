@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.time.DayOfWeek
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -22,6 +23,8 @@ class ListFragment: Fragment() {
     private lateinit var listOfDate : MutableList<DateItem>
 
     private lateinit var delIcon : Drawable
+
+    private  var nowPosition = 0
 
     private val dayOfWeekList =listOf(
         "ПН",
@@ -57,12 +60,7 @@ class ListFragment: Fragment() {
         }
 
         adapter = ListTaskAdapter(listener)
-        Executors.newSingleThreadExecutor().execute{//Фоновый поток
-            val items = ItemRepository.newInstance(requireContext()).getItems()
-            recycler.post{
-                adapter.setItems(items)
-            }
-        }
+
         adapter.contextMenuListener = this
 
         recycler.adapter = adapter
@@ -74,18 +72,34 @@ class ListFragment: Fragment() {
         initListOfDay()
         adapterDate.setItems(listOfDate)
 
+        adapterDate.setClickListener {
+            nowPosition = it
+            loadData()
+        }
+
+
+        nowPosition = (listOfDate.size / 2) - 1
         recyclerDate.adapter = adapterDate
-        recyclerDate.scrollToPosition((listOfDate.size / 2) - 1)
+        recyclerDate.scrollToPosition(nowPosition)
 
         delIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete)!!
 
         val itemTouchHelper = ItemTouchHelper(SwipeToDelete(adapter, recycler,  delIcon, requireContext()))
         itemTouchHelper.attachToRecyclerView(recycler)
 
+        loadData()
+
         return view
     }
 
-
+    fun loadData(){
+        Executors.newSingleThreadExecutor().execute{//Фоновый поток
+            val items = ItemRepository.newInstance(requireContext()).getItems(listOfDate[nowPosition].week)
+            recycler.post{
+                adapter.setItems(items)
+            }
+        }
+    }
 
 
     private fun initListOfDay(){

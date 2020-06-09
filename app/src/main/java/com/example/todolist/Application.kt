@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.Room.*
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
 class Application: Application() {
     override fun onCreate() {
@@ -37,6 +38,7 @@ class Application: Application() {
     }
 
     @Database(entities = arrayOf(Task::class), version = 2)
+    @TypeConverters(SelectedDayConverter::class)
     abstract class AppDb : RoomDatabase() {
         abstract fun getTaskDao(): TaskDao
 

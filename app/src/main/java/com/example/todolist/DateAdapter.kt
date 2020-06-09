@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import java.lang.Math.abs
 import java.util.*
 
-
+typealias OnMonthDayClickListener = (Int)->Unit//замена интерфейса
 class DateAdapter() : RecyclerView.Adapter<DateAdapter.Holder>() {
 
     lateinit var myList: MutableList<DateItem>
 
+    lateinit var listener: OnMonthDayClickListener
 
     fun setItems(list : MutableList<DateItem>){
         myList = list
@@ -29,8 +30,7 @@ class DateAdapter() : RecyclerView.Adapter<DateAdapter.Holder>() {
 
 
         view.setOnClickListener{
-            val itemPosition = holder.adapterPosition
-
+            listener(holder.adapterPosition)
         }
 
         val itemPosition = holder.adapterPosition
@@ -39,6 +39,10 @@ class DateAdapter() : RecyclerView.Adapter<DateAdapter.Holder>() {
 
 
         return holder
+    }
+
+    fun setClickListener(listener: OnMonthDayClickListener){
+        this.listener = listener
     }
 
     override fun getItemCount() = myList.size

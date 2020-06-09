@@ -84,16 +84,17 @@ class ListTaskAdapter( var listener: ListenerInterface?):RecyclerView.Adapter<Li
         if (items.size == 0){
             return
         }
+
         val removeItem =items[pos]
         ItemRepository.newInstance(cont).removeItem(items[pos])
 
-        Executors.newSingleThreadExecutor().execute{
-            val items = ItemRepository.newInstance(cont).getItems()
-            setItems(items)
-        }
+        items.removeAt(pos)
         notifyDataSetChanged()
 
-        /*Snackbar.make(viewHolder.itemView, "$removeItem deleted.", Snackbar.LENGTH_LONG).setAction("UNDO"){
+
+
+
+        /*Snackbar.make(viewHolder.itemView, "Hello, man", Snackbar.LENGTH_LONG).setAction("UNDO"){
             //items.add(pos, removeItem)
             //notifyItemInserted(pos)
 
@@ -137,15 +138,13 @@ class ListTaskAdapter( var listener: ListenerInterface?):RecyclerView.Adapter<Li
         fun bind(item: Task){
             title.text = item.titleText
 
-            var k = item.selectedDays
 
-            for (element in 0..6){
-                if (k % 10 == 0){
-                    dayRepeatTask[6 - element].visibility = View.GONE
+            for (element in item.selectedDays){
+                if (element){
+                    dayRepeatTask[item.selectedDays.indexOf(element)].visibility = View.GONE
                 } else{
-                    dayRepeatTask[6 - element].visibility = View.VISIBLE
+                    dayRepeatTask[item.selectedDays.indexOf(element)].visibility = View.VISIBLE
                 }
-                k /= 10
             }
         }
     }

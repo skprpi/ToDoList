@@ -14,8 +14,8 @@ class ItemRepository {
         Application.Db.getInstance(cont)?.getTaskDao()?.update(task)
     }
 
-    fun getItems(): List<Task>{
-        return Application.Db.getInstance(cont)?.getTaskDao()?.getAll() ?: emptyList()
+    fun getItems(day: String): List<Task>{
+        return Application.Db.getInstance(cont)?.getTaskDao()?.getTaskByDay(day) ?: emptyList()
     }
 
 
