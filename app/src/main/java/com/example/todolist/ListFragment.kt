@@ -36,6 +36,10 @@ class ListFragment: Fragment() {
         "ВС"
     )
 
+    private val monthName = listOf(
+        "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+        )
+
     private var lastDay = 180
 
     private var firstDay = -180
@@ -84,7 +88,7 @@ class ListFragment: Fragment() {
         }
 
 
-        nowPosition = (listOfDate.size / 2) - 1
+        nowPosition = (listOfDate.size / 2)
         recyclerDate.adapter = adapterDate
         recyclerDate.scrollToPosition(nowPosition)
 
@@ -113,25 +117,27 @@ class ListFragment: Fragment() {
         val gc: GregorianCalendar =  GregorianCalendar()
         gc.add(Calendar.DATE, firstDay)
 
-        val dayOfMonth = gc.get(GregorianCalendar.DAY_OF_MONTH)
+        var dayOfMonth = gc.get(GregorianCalendar.DAY_OF_MONTH)
         var dayOfWeek = gc.get(GregorianCalendar.DAY_OF_WEEK)
+        var numMonth = gc.get(GregorianCalendar.MONTH)
 
         dayOfWeek = (dayOfWeek + 5) % 7
         val strDayOfWeek = dayOfWeekList[dayOfWeek]
-        listOfDate = mutableListOf(DateItem(strDayOfWeek, dayOfMonth.toString()))
+        listOfDate = mutableListOf(DateItem(strDayOfWeek, dayOfMonth.toString(), monthName[numMonth]))
 
 
         for (i in firstDay + 1..lastDay){
             val gc: GregorianCalendar =  GregorianCalendar()
             gc.add(Calendar.DATE, i)
 
-            val dayOfMonth = gc.get(GregorianCalendar.DAY_OF_MONTH)
-            var dayOfWeek = gc.get(GregorianCalendar.DAY_OF_WEEK)
+            dayOfMonth = gc.get(GregorianCalendar.DAY_OF_MONTH)
+            dayOfWeek = gc.get(GregorianCalendar.DAY_OF_WEEK)
+            numMonth = gc.get(GregorianCalendar.MONTH)
 
             dayOfWeek = (dayOfWeek + 5) % 7
-            val strDayOfWeek = dayOfWeekList[dayOfWeek]
+            val strDayOfWeek2 = dayOfWeekList[dayOfWeek]
 
-            listOfDate.add(DateItem(strDayOfWeek, dayOfMonth.toString()))
+            listOfDate.add(DateItem(strDayOfWeek2, dayOfMonth.toString(), monthName[numMonth] ))
 
         }
     }

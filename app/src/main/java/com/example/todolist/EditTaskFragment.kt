@@ -62,8 +62,8 @@ class EditTaskFragment:  Fragment() {
         buttonActiveBg = R.drawable.orange_rounded_bg
 
         alarmManager = activity!!.getSystemService(ALARM_SERVICE) as AlarmManager
-        val myIntent = Intent(requireContext(), AlarmReceiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, myIntent, 0)
+
+
 
         initTimeNotification(view)
         initSelectedDays(view)
@@ -247,15 +247,6 @@ fun createNotification(){
     notificationManager.notify(null,1, notif.build())
 }
 
-    fun createAlarm(){
-        val calendar = Calendar.getInstance();
-
-        calendar.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-        calendar.set(Calendar.MINUTE, Calendar.getInstance().get(Calendar.MINUTE));
-
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-    }
-
     fun saveAll(view: View){
 
 
@@ -288,7 +279,7 @@ fun createNotification(){
                 }
 
             }
-            createAlarm()
+
             createNotification()
             (activity as Navigatable).goBack()
 

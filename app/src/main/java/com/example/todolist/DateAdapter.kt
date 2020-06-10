@@ -74,11 +74,18 @@ class DateAdapter() : RecyclerView.Adapter<DateAdapter.Holder>() {
         val parents = itemView.findViewById<ConstraintLayout>(R.id.parents_layout)
         val parents2 = itemView.findViewById<ConstraintLayout>(R.id.parents_layout2)
         val indicator = itemView.findViewById<TextView>(R.id.indicator)
+        val monthDate = itemView.findViewById<TextView>(R.id.month_text)
 
 
         fun bind(dateItem: DateItem, pos: Int) {
             weekDay.text = dateItem.week// день недели
             monthDay.text = dateItem.month//число
+            if (dateItem.month == "1"){
+                monthDate.setText(dateItem.nameMonth)
+                monthDate.visibility = View.VISIBLE
+            } else{
+                monthDate.visibility = View.GONE
+            }
 
             Executors.newSingleThreadExecutor().execute {
                 if (ItemRepository.newInstance(itemView.context).getCountItems(dateItem.week) > 0) {
@@ -87,6 +94,8 @@ class DateAdapter() : RecyclerView.Adapter<DateAdapter.Holder>() {
                     indicator.visibility = View.GONE
                 }
             }
+
+
 
             if (pos == 180){
                 parents.setBackgroundResource(buttonActiveBg)
