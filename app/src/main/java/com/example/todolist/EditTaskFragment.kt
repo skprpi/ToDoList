@@ -1,21 +1,20 @@
 package com.example.todolist
 
 import android.annotation.SuppressLint
-import android.app.AlarmManager
-import android.app.Notification
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -225,15 +224,27 @@ class EditTaskFragment:  Fragment() {
     }
 
 fun createNotification(){
+    var notificationManager = NotificationManagerCompat.from(requireContext())
     val notif =  NotificationCompat.Builder(requireContext(), "1")
         .setContentText(task?.subtitleText)
         .setContentTitle(task?.titleText)
        // .setContentIntent(pendingIntent)
         .setSmallIcon(R.drawable.ic_delete)
-        .build()
 
-    val notifManager = activity!!.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-    notifManager.notify(null,1, notif)
+
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val channelId = "Your_channel_id"
+        val channel = NotificationChannel(
+            channelId,
+            "Channel human readable title",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        notificationManager.createNotificationChannel(channel)
+        notif.setChannelId(channelId)
+    }
+
+    notificationManager.notify(null,1, notif.build())
 }
 
     fun createAlarm(){
