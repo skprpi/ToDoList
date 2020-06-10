@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.Math.abs
 import java.util.*
+import java.util.concurrent.Executors
 
 typealias OnMonthDayClickListener = (Int)->Unit//замена интерфейса
 class DateAdapter() : RecyclerView.Adapter<DateAdapter.Holder>() {
@@ -36,6 +37,7 @@ class DateAdapter() : RecyclerView.Adapter<DateAdapter.Holder>() {
 
         view.setOnClickListener{
             listener(holder.adapterPosition)
+
             if (!boolHolder){
                 holder.parents2.setBackgroundResource(R.drawable.black_rounded_bg)
             } else{
@@ -71,11 +73,21 @@ class DateAdapter() : RecyclerView.Adapter<DateAdapter.Holder>() {
         val monthDay = itemView.findViewById<TextView>(R.id.day_of_moth)
         val parents = itemView.findViewById<ConstraintLayout>(R.id.parents_layout)
         val parents2 = itemView.findViewById<ConstraintLayout>(R.id.parents_layout2)
+        val indicator = itemView.findViewById<TextView>(R.id.indicator)
 
 
         fun bind(dateItem: DateItem, pos: Int) {
-            weekDay.text = dateItem.week
-            monthDay.text = dateItem.month
+            weekDay.text = dateItem.week// день недели
+            monthDay.text = dateItem.month//число
+
+            Executors.newSingleThreadExecutor().execute {
+                if (ItemRepository.newInstance(itemView.context).getCountItems(dateItem.week) > 0) {
+                    indicator.visibility = View.VISIBLE
+                } else {
+                    indicator.visibility = View.GONE
+                }
+            }
+
             if (pos == 180){
                 parents.setBackgroundResource(buttonActiveBg)
                 monthDay.setTextColor(Color.WHITE)

@@ -1,21 +1,36 @@
 package com.example.todolist
 
 import android.annotation.SuppressLint
-import android.app.Activity
+import android.app.AlarmManager
+import android.app.Notification
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Context.ALARM_SERVICE
+import android.content.Context.NOTIFICATION_SERVICE
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todolist.Const.Companion.AL_RQS
 import com.google.android.material.textfield.TextInputEditText
+import java.util.*
 import java.util.concurrent.Executors
+
 
 class EditTaskFragment:  Fragment() {
 
     lateinit var repository: ItemRepository
+
+    lateinit var alarmManager: AlarmManager
+    lateinit var pendingIntent: PendingIntent
 
     var task: Task? = null
     var isEditMode = false
@@ -47,6 +62,9 @@ class EditTaskFragment:  Fragment() {
         buttonNormalBg = R.drawable.gray_rounded_bg
         buttonActiveBg = R.drawable.orange_rounded_bg
 
+        alarmManager = activity!!.getSystemService(ALARM_SERVICE) as AlarmManager
+        val myIntent = Intent(requireContext(), AlarmReceiver::class.java)
+        pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, myIntent, 0)
 
         initTimeNotification(view)
         initSelectedDays(view)
@@ -206,11 +224,32 @@ class EditTaskFragment:  Fragment() {
         }
     }
 
+fun createNotification(){
+    val notif =  NotificationCompat.Builder(requireContext(), "1")
+        .setContentText(task?.subtitleText)
+        .setContentTitle(task?.titleText)
+       // .setContentIntent(pendingIntent)
+        .setSmallIcon(R.drawable.ic_delete)
+        .build()
 
+    val notifManager = activity!!.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+    notifManager.notify(null,1, notif)
+}
+
+    fun createAlarm(){
+        val calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE, Calendar.getInstance().get(Calendar.MINUTE));
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+    }
 
     fun saveAll(view: View){
 
+
         val buttonSave = view.findViewById<View>(R.id.save_options).setOnClickListener{
+
             if (isEditMode) {
                 task = task?.copy(
                     titleText = view.findViewById<TextInputEditText>(R.id.name_task).text.toString(),
@@ -238,10 +277,12 @@ class EditTaskFragment:  Fragment() {
                 }
 
             }
+            createAlarm()
+            createNotification()
             (activity as Navigatable).goBack()
+
         }
     }
-
 
     companion object {
 

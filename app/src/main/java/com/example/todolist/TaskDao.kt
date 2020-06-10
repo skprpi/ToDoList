@@ -16,6 +16,9 @@ interface TaskDao {
     @Query("SELECT * FROM Task WHERE selectedDays LIKE '%' || :day || '%'")
     fun getTaskByDay(day: String): List<Task>
 
+    @Query("SELECT count(id) FROM Task WHERE selectedDays LIKE '%' || :day || '%'")
+    fun getCountElementInList(day: String): Int
+
     @Query("SELECT * FROM Task")
     fun getAll() : List<Task>
 }

@@ -89,10 +89,10 @@ class ListTaskAdapter( var listener: ListenerInterface?):RecyclerView.Adapter<Li
         ItemRepository.newInstance(cont).removeItem(items[pos])
 
         items.removeAt(pos)
+
+        listener?.onEmptyList()
+
         notifyDataSetChanged()
-
-
-
 
         /*Snackbar.make(viewHolder.itemView, "Hello, man", Snackbar.LENGTH_LONG).setAction("UNDO"){
             //items.add(pos, removeItem)

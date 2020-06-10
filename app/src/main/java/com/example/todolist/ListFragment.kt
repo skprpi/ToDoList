@@ -57,6 +57,11 @@ class ListFragment: Fragment() {
                 }
 
             }
+
+            override fun onEmptyList() {
+                adapterDate.notifyDataSetChanged()
+            }
+
         }
 
         adapter = ListTaskAdapter(listener)
@@ -96,6 +101,7 @@ class ListFragment: Fragment() {
     fun loadData(){
         Executors.newSingleThreadExecutor().execute{//Фоновый поток
             val items = ItemRepository.newInstance(requireContext()).getItems(listOfDate[nowPosition].week)
+
             recycler.post{
                 adapter.setItems(items)
             }
@@ -126,6 +132,7 @@ class ListFragment: Fragment() {
             val strDayOfWeek = dayOfWeekList[dayOfWeek]
 
             listOfDate.add(DateItem(strDayOfWeek, dayOfMonth.toString()))
+
         }
     }
 
