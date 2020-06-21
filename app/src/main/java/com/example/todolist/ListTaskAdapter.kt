@@ -41,10 +41,7 @@ class ListTaskAdapter( var listener: ListenerInterface?):RecyclerView.Adapter<Li
         view.setOnClickListener{
             val itemPosition = holder.adapterPosition
             listener?.onItemClicked(items[itemPosition])
-
         }
-
-        //holder.button.setOnCreateContextMenuListener(contextMenuListener)
 
         holder.button.setOnClickListener{
             val popup: PopupMenu = PopupMenu(parent.context, holder.button)
@@ -93,19 +90,6 @@ class ListTaskAdapter( var listener: ListenerInterface?):RecyclerView.Adapter<Li
         listener?.onEmptyList()
 
         notifyDataSetChanged()
-
-        /*Snackbar.make(viewHolder.itemView, "Hello, man", Snackbar.LENGTH_LONG).setAction("UNDO"){
-            //items.add(pos, removeItem)
-            //notifyItemInserted(pos)
-
-            ItemRepository.newInstance(cont).addItem(removeItem)
-
-            Executors.newSingleThreadExecutor().execute{
-                val items = ItemRepository.newInstance(cont).getItems()
-                setItems(items)
-            }
-            notifyDataSetChanged()
-        }.show()*/
     }
 
     fun setItems(tasks: List<Task>, newListener: ListenerInterface? = listener){
@@ -148,15 +132,6 @@ class ListTaskAdapter( var listener: ListenerInterface?):RecyclerView.Adapter<Li
             }
         }
     }
-
-   /* public fun showPopup(view: View){
-        val popup: PopupMenu = PopupMenu(context, view)
-        // popup.setOnMenuItemClickListener()
-        popup.inflate(R.menu.popup_menu)
-        popup.show()
-    }*/
-
-    
 }
 
 

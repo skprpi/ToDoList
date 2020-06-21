@@ -47,11 +47,6 @@ class DateAdapter() : RecyclerView.Adapter<DateAdapter.Holder>() {
             boolHolder = true
             lastHolder = holder
         }
-
-        val itemPosition = holder.adapterPosition
-
-
-
         return holder
     }
 

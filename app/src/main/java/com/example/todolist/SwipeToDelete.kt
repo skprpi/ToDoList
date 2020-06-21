@@ -41,11 +41,8 @@ class SwipeToDelete(var adapter: ListTaskAdapter,var  recycler: RecyclerView, va
                 adapter.deleteItem(pos, viewHolder, cont)
             }
             ItemTouchHelper.RIGHT->{
-
             }
         }
-
-
     }
 
     override fun onChildDraw(
@@ -57,13 +54,8 @@ class SwipeToDelete(var adapter: ListTaskAdapter,var  recycler: RecyclerView, va
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-
-
-
         val itemView2 = viewHolder.itemView
-
         val iconMargin = (itemView2.height - delIcon.intrinsicHeight) / 2
-
         val itemView = viewHolder.itemView
         if (dX > 0){
             swipeBackgrowndL.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
@@ -78,7 +70,6 @@ class SwipeToDelete(var adapter: ListTaskAdapter,var  recycler: RecyclerView, va
         swipeBackgrowndR.draw(c)
 
         c.save()
-
         if (dX > 0){
             c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
         }else{

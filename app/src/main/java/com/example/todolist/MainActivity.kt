@@ -48,15 +48,16 @@ class MainActivity : AppCompatActivity(), Navigatable {
             .commit()
     }
 
+    override fun goBack() {
+        if (supportFragmentManager.backStackEntryCount > 1)
+            supportFragmentManager.popBackStack()
+    }
+
     override fun onBackPressed() {
         goBack()
     }
 
-    override fun goBack() {
-        if (supportFragmentManager.backStackEntryCount > 1)
-            supportFragmentManager.popBackStack()
 
-    }
 
 }
 

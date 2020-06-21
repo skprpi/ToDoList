@@ -13,6 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import android.widget.TimePicker
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
@@ -20,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.Const.Companion.AL_RQS
 import com.google.android.material.textfield.TextInputEditText
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -45,6 +49,9 @@ class EditTaskFragment:  Fragment() {
     var selectedDays:List<Button>? = null
     var selectedDaysBool = mutableListOf( false, false, false, false ,false, false ,false)
 
+    var timeInSeconds = -1
+
+
     private var buttonNormalBg: Int = Color.parseColor("#FF0000")
     private var buttonActiveBg: Int = Color.parseColor("#FF8BC34A")
 
@@ -63,7 +70,25 @@ class EditTaskFragment:  Fragment() {
 
         alarmManager = activity!!.getSystemService(ALARM_SERVICE) as AlarmManager
 
+        view.findViewById<Button>(R.id.back_options).setOnClickListener{
+            (activity as Navigatable).goBack()
+        }
 
+
+        val timeText = view.findViewById<TextView>(R.id.time_text)
+        view.findViewById<Button>(R.id.time_picker).setOnClickListener{
+            val calender = Calendar.getInstance()
+            val timeListener = TimePickerDialog.OnTimeSetListener{ view: TimePicker?, hourOfDay: Int, minute: Int ->
+
+                calender.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                calender.set(Calendar.MINUTE, minute)
+
+                timeText.text = SimpleDateFormat("HH:mm").format(calender.time)
+
+                textToSecond(timeText.text.toString())
+            }
+            TimePickerDialog(requireContext(), timeListener, calender.get(Calendar.HOUR_OF_DAY), calender.get(Calendar.MINUTE), true).show()
+        }
 
         initTimeNotification(view)
         initSelectedDays(view)
@@ -75,11 +100,14 @@ class EditTaskFragment:  Fragment() {
             numButtonNotification = it.notification
             selectedDaysBool = it.selectedDays
             numTypeNotification = it.notificationType
+
+            timeInSeconds = it.timeStart
+
             updateNotification(view)
             updateSelectedDays(view)
             updateTypeNotification(view)
+            secondToText(view)
         }
-
 
         saveAll(view)
 
@@ -98,6 +126,31 @@ class EditTaskFragment:  Fragment() {
                 item.setTextColor(Color.BLACK)
             }
         }
+    }
+
+    fun textToSecond(text: String){
+        if ((text[0] - '0' >= 0) and (text[0] - '0' <= 9)) {
+            timeInSeconds =
+                ((text[0] - '0') * 10 + (text[1] - '0')) * 3600 + ((text[3] - '0') * 10 + (text[4] - '0')) * 60
+            Toast.makeText(requireContext(), "${timeInSeconds}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun secondToText(view: View){
+        val timeText = view.findViewById<TextView>(R.id.time_text)
+
+        if (timeInSeconds != -1) {
+            val calender = Calendar.getInstance()
+
+            val hourOfDay =timeInSeconds / 3600
+            val minute = (timeInSeconds - hourOfDay * 3600) / 60
+
+            calender.set(Calendar.HOUR_OF_DAY, hourOfDay)
+            calender.set(Calendar.MINUTE, minute)
+
+            timeText.text = SimpleDateFormat("HH:mm").format(calender.time)
+        }
+
     }
 
     @SuppressLint("ResourceType")
@@ -244,21 +297,29 @@ fun createNotification(){
         notif.setChannelId(channelId)
     }
 
+
+
     notificationManager.notify(null,1, notif.build())
 }
 
     fun saveAll(view: View){
-
-
         val buttonSave = view.findViewById<View>(R.id.save_options).setOnClickListener{
-
+            if ((numButtonNotification == -1) || (numTypeNotification == -1)
+                || (selectedDaysBool ==
+                        mutableListOf( false, false, false, false ,false, false ,false)) ||
+                view.findViewById<TextInputEditText>(R.id.name_task).text.toString() == ""){
+                Toast.makeText(requireContext(), "Нужно заполнить все поля (примечание можно не указывать)", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+ 
             if (isEditMode) {
                 task = task?.copy(
                     titleText = view.findViewById<TextInputEditText>(R.id.name_task).text.toString(),
                     subtitleText = view.findViewById<TextInputEditText>(R.id.name2_task).text.toString(),
                     notification = numButtonNotification,
                     notificationType = numTypeNotification,
-                    selectedDays = selectedDaysBool
+                    selectedDays = selectedDaysBool,
+                    timeStart = timeInSeconds
                 )
                 Executors.newSingleThreadExecutor().execute{
                     ItemRepository.newInstance(requireContext()).updateTask(task!!)
@@ -272,7 +333,7 @@ fun createNotification(){
                     notificationType = numTypeNotification,
                     selectedDays = selectedDaysBool,
                     timeEnd = 0,
-                    timeStart = 0
+                    timeStart = timeInSeconds
                 )
                 Executors.newSingleThreadExecutor().execute {
                     ItemRepository.newInstance(requireContext()).addItem(task!!)

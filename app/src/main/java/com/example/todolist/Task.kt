@@ -14,7 +14,7 @@ data class Task( @PrimaryKey(autoGenerate = true) var id: Int,
                 var subtitleText: String,
                  @TypeConverters(SelectedDayConverter::class)
                 var selectedDays: MutableList<Boolean>,
-                var timeStart: Long,
+                var timeStart: Int,
                 var timeEnd : Long,
                 var notification: Int,
                 var notificationType : Int

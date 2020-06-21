@@ -7,16 +7,81 @@
     android:orientation="vertical"
     android:layout_height="wrap_content">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/orange">
+
+        <Button
+            android:id="@+id/save_options"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/ic_goast"
+            app:layout_constraintTop_toTopOf="parent" >
+        </Button>
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_done_24px"
+            app:layout_constraintBottom_toBottomOf="@+id/save_options"
+            app:layout_constraintEnd_toEndOf="@+id/save_options"
+            app:layout_constraintStart_toStartOf="@+id/save_options"
+            app:layout_constraintTop_toTopOf="@+id/save_options" />
+
+        <Button
+            android:id="@+id/back_options"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/ic_goast"
+            app:layout_constraintTop_toTopOf="parent" >
+
+        </Button>
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_back"
+            app:layout_constraintBottom_toBottomOf="@+id/back_options"
+            app:layout_constraintEnd_toEndOf="@+id/back_options"
+            app:layout_constraintStart_toStartOf="@+id/back_options"
+            app:layout_constraintTop_toTopOf="@+id/back_options" />
+
+        <TextView
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Создание задачи"
+            android:textSize="20sp"
+            android:layout_marginLeft="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/back_options"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="20dp"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="136dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:id="@+id/name_task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLength="22"
             android:hint="Название" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -27,12 +92,22 @@
         tools:layout_editor_absoluteY="136dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:id="@+id/name2_task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLength="100"
             android:hint="Примечание" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Повтор"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,6 +115,7 @@
         android:gravity="center"
         android:layout_marginTop="20dp"
         android:layout_height="wrap_content">
+
 
         <Button
             android:id="@+id/day1"
@@ -100,6 +176,14 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Уведомление"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -132,7 +216,6 @@
             android:text="10 минут" />
 
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -165,6 +248,14 @@
             android:text="2 часа" />
 
     </LinearLayout>
+
+    <TextView
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Тип уведомления"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -200,10 +291,16 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/save_options"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="save" />
+        android:id="@+id/time_picker"
+        android:text="time Picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/time_text"
+        android:text="Время ещё не установлено"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>

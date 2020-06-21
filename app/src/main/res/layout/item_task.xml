@@ -21,16 +21,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-
         android:id="@+id/option_new_xxx"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ic_goast"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/ic_more_vert_24px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.16" />
+
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/ic_more_vert_24px"
+        app:layout_constraintBottom_toBottomOf="@+id/option_new_xxx"
+        app:layout_constraintEnd_toEndOf="@+id/option_new_xxx"
+        app:layout_constraintStart_toStartOf="@+id/option_new_xxx"
+        app:layout_constraintTop_toTopOf="@+id/option_new_xxx" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -42,9 +50,7 @@
 
         <TextView
             android:id="@+id/day_1"
-
             style="@style/RepeatedDays"
-
             android:layout_marginStart="5dp"
             android:text="ПН"
             app:layout_constraintBottom_toBottomOf="parent"
