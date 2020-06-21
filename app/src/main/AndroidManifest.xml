@@ -2,19 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.todolist">
 
-
-    <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-
+        android:name=".Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name = "com.example.todolist.Application"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityList"></activity>
+        <receiver
+            android:name=".AlarmReceiver"
+            android:process=":remote"
+            android:enabled="true"></receiver>
+
+        <activity android:name=".ActivityList" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

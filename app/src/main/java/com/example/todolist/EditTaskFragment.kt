@@ -2,9 +2,7 @@ package com.example.todolist
 
 import android.annotation.SuppressLint
 import android.app.*
-import android.content.Context
 import android.content.Context.ALARM_SERVICE
-import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -21,7 +19,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todolist.Const.Companion.AL_RQS
 import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
 import java.util.*
@@ -277,29 +274,23 @@ class EditTaskFragment:  Fragment() {
     }
 
 fun createNotification(){
-    var notificationManager = NotificationManagerCompat.from(requireContext())
-    val notif =  NotificationCompat.Builder(requireContext(), "1")
-        .setContentText(task?.subtitleText)
-        .setContentTitle(task?.titleText)
-       // .setContentIntent(pendingIntent)
-        .setSmallIcon(R.drawable.ic_delete)
+    val myIntent1 = Intent(requireActivity(), AlarmReceiver::class.java)
+    val pendingintent2 = PendingIntent.getBroadcast(requireActivity(), 1, myIntent1, PendingIntent.FLAG_UPDATE_CURRENT)
+    val alarmManager1 = requireActivity().getSystemService(ALARM_SERVICE) as AlarmManager?
+    val calendar1Notify = Calendar.getInstance()
+
+    calendar1Notify.timeInMillis = System.currentTimeMillis() + 3* 1000//timeInSeconds * 1000
+
+    alarmManager1!![AlarmManager.RTC_WAKEUP, calendar1Notify.timeInMillis] = pendingintent2 // wake up (system mite)
+    val time24h = 24 * 60 * 60 * 1000.toLong()
+    alarmManager1.setRepeating(
+        AlarmManager.RTC_WAKEUP,
+        calendar1Notify.timeInMillis,
+         AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+        pendingintent2
+    )
 
 
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val channelId = "Your_channel_id"
-        val channel = NotificationChannel(
-            channelId,
-            "Channel human readable title",
-            NotificationManager.IMPORTANCE_HIGH
-        )
-        notificationManager.createNotificationChannel(channel)
-        notif.setChannelId(channelId)
-    }
-
-
-
-    notificationManager.notify(null,1, notif.build())
 }
 
     fun saveAll(view: View){
