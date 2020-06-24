@@ -261,10 +261,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:gravity="center"
+        android:layout_marginLeft="16dp"
         android:orientation="horizontal">
 
         <Button
+            android:visibility="gone"
             android:id="@+id/typeNotification1"
             android:layout_width="100dp"
             android:layout_height="40dp"
@@ -274,9 +275,9 @@
 
         <Button
             android:id="@+id/typeNotification2"
-            android:layout_width="100dp"
+            android:layout_width="130dp"
             android:layout_height="40dp"
-            android:layout_marginHorizontal="15dp"
+            android:layout_marginRight="15dp"
             android:background="@drawable/gray_rounded_bg"
             android:text="Уведомление" />
 
@@ -290,17 +291,32 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/time_picker"
-        android:text="time Picker"
+    <TextView
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Время"
+        android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="16dp"
+        android:id="@+id/time_picker"
+        android:text="Выбрать время"
+        android:background="@drawable/gray_rounded_bg"
+        android:layout_width="100dp"
+        android:layout_height="40dp"/>
+
     <TextView
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
         android:id="@+id/time_text"
         android:text="Время ещё не установлено"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+
 
 
 </LinearLayout>

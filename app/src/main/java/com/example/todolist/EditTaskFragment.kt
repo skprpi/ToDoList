@@ -129,7 +129,6 @@ class EditTaskFragment:  Fragment() {
         if ((text[0] - '0' >= 0) and (text[0] - '0' <= 9)) {
             timeInSeconds =
                 ((text[0] - '0') * 10 + (text[1] - '0')) * 3600 + ((text[3] - '0') * 10 + (text[4] - '0')) * 60
-            Toast.makeText(requireContext(), "${timeInSeconds}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -279,16 +278,40 @@ fun createNotification(){
     val alarmManager1 = requireActivity().getSystemService(ALARM_SERVICE) as AlarmManager?
     val calendar1Notify = Calendar.getInstance()
 
-    calendar1Notify.timeInMillis = System.currentTimeMillis() + 3* 1000//timeInSeconds * 1000
+    //calendar1Notify.timeInMillis = System.currentTimeMillis() + 3* 1000//timeInSeconds * 1000
+    calendar1Notify.timeInMillis = timeInSeconds.toLong() * 1000//timeInSeconds * 1000
+
+    if ((numTypeNotification == 0) || (numButtonNotification == 0)){
+        return
+    }
+    else if(numTypeNotification == 1){
+        calendar1Notify.timeInMillis -= 5*60 * 1000 //5 min
+    }
+    else if(numTypeNotification == 2){
+        calendar1Notify.timeInMillis -= 10*60 * 1000 //10 min
+    }
+    else if(numTypeNotification == 3){
+        calendar1Notify.timeInMillis -= 30*60 * 1000 //30 min
+    }
+    else if(numTypeNotification == 4){
+        calendar1Notify.timeInMillis -= 60*60 * 1000 //1 hour
+    }
+    else if(numTypeNotification == 5){
+        calendar1Notify.timeInMillis -= 2*60*60 * 1000 //2 hours
+    }
 
     alarmManager1!![AlarmManager.RTC_WAKEUP, calendar1Notify.timeInMillis] = pendingintent2 // wake up (system mite)
-    val time24h = 24 * 60 * 60 * 1000.toLong()
-    alarmManager1.setRepeating(
-        AlarmManager.RTC_WAKEUP,
-        calendar1Notify.timeInMillis,
-         AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-        pendingintent2
-    )
+
+    for (i in 0.. 6) {
+        if (selectedDaysBool[i]) {
+            alarmManager1.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar1Notify.timeInMillis,
+                AlarmManager.INTERVAL_DAY * 7,
+                pendingintent2
+            )
+        }
+    }
 
 
 }
@@ -298,7 +321,8 @@ fun createNotification(){
             if ((numButtonNotification == -1) || (numTypeNotification == -1)
                 || (selectedDaysBool ==
                         mutableListOf( false, false, false, false ,false, false ,false)) ||
-                view.findViewById<TextInputEditText>(R.id.name_task).text.toString() == ""){
+                view.findViewById<TextInputEditText>(R.id.name_task).text.toString() == "" ||
+                timeInSeconds == -1){
                 Toast.makeText(requireContext(), "Нужно заполнить все поля (примечание можно не указывать)", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }

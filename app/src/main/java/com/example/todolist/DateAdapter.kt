@@ -75,11 +75,13 @@ class DateAdapter() : RecyclerView.Adapter<DateAdapter.Holder>() {
         fun bind(dateItem: DateItem, pos: Int) {
             weekDay.text = dateItem.week// день недели
             monthDay.text = dateItem.month//число
-            if (dateItem.month == "1"){
-                monthDate.setText(dateItem.nameMonth)
-                monthDate.visibility = View.VISIBLE
-            } else{
-                monthDate.visibility = View.GONE
+            Executors.newSingleThreadExecutor().execute {
+                if (dateItem.month == "1") {
+                    monthDate.setText(dateItem.nameMonth)
+                    monthDate.visibility = View.VISIBLE
+                } else {
+                    monthDate.visibility = View.GONE
+                }
             }
 
             Executors.newSingleThreadExecutor().execute {

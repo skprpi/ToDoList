@@ -28,10 +28,10 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val notifBuilder = NotificationCompat.Builder(context)
             .setContentTitle("Reminder")
-            .setContentText("You need to eat")
+            .setContentText("You need to do your task!")
             .setWhen(System.currentTimeMillis())
             .setContentIntent(pendingIntent)
-            .setSmallIcon(R.drawable.ic_delete)
+            .setSmallIcon(R.drawable.ic_done_24px)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = "Your_channel_id"
